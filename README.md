@@ -12,3 +12,4 @@ Duccio Rocchini, president of the master program
 
 >**Note**
 >Scripts will be added lecture by lecture
+
