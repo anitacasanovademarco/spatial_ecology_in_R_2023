@@ -1,51 +1,50 @@
-# Codes related to population growth
+# Codes related to POPULATION GROWTH
 
 # Let's install spatstat, which allows us to make a SPATIAL POINT PATTERN ANALISYS
 
 install.packages("spatstat") # QUOTES are needed to protect the package we want to install which is outside R
 
 #the function library(spatstat) is used to check if the package has already been installed
-library(spadstat)
+library(spatstat)
 
-# we are using data from outside R, in order to previously understand how they work
+# we are using data in Markdown, which is  outside R, in order to previously understand how they work
 
-# Let's use the BEI DATA:
+#DATA DESCRIPTION
+# Let's use some datasets provided by spatstat, like BEI DATA 
+#(The dataset bei gives the positions of 3605 trees of the species Beilschmiedia pendula (Lauraceae) in a 1000 by 500 metre rectangular sampling region in the tropical rainforest of Barro Colorado Island. )
 
-#data description:
+# PLOTTING  DATA FROM SPATSTAT (see what it represents)
+plot(bei) 
+# as the points are too big for this area, we'll change their shame
 
-#https://cran.r-project.org
-
-# plotting the data of spatstat (see what it represents)
-plot(bei) # as the points are too big for this area, we'll change their shame
-
-# changing dimension - cex
+# CHANGING DATA DIMENSION - cex
 plot(bei,cex=.5)
 
 # why are the trees clumbed in some area?
 
-#changing the symbol  - pch
-plot(bei,cex=.2,pch=19)
+#CHANGING THE SYMBOL  - pch
+plot(bei,cex=.2,pch=19) #search the number of R symbols on the internet
 
-# additional datasets
+#ADDITIONAL DATASETS
 bei.extra # it has two variables: elevation (elev) and gradient (grad). They allow to understand the distribution of bei datas
 
-plot(bei.extra) #here we have the raster file
+plot(bei.extra) #here we have the raster file =! vector file
 
 # Let's use only part of the dataset: elev
 bei.extra$elev  #$ sign links elevation to the dataset
 plot(bei.extra$elev) 
 elevation <- plot(bei.extra$elev)  #elevation has been assignet to an homonimous object, simple to find
-bei.extra[1] #take the fist element, so it's anothe way to isolate elevation
 
 #second method to select elements
+bei.extra[1] #take the fist element, so it's another way to isolate elevation
 elevation2 <- bei.extra[[1]]
 plot(elevation2)
 
-# pasing from points to a continuous surface (INTERPOLATION)
-densitymap<-density(bei) #the densitymap gives us info about pixel
+# INTERPOLATION: passing from points to a continuous surface 
+densitymap<-density(bei) #the densitymap gives us info about the distribution of pixel
 plot(densitymap)
 
-#Let's put the bei points over the densitymap
+#Let's overlap  bei points to the densitymap
 points(bei, cex=.2)
 
 #Avoid pictures with a combination of blue, green and red colors as daltonic people can't see them
@@ -62,7 +61,7 @@ cl <- colorRampPalette(c("black", "red", "orange", "yellow"))(4) #R is capital l
 #100 represents the different colors that can be present between the colors chosen
 plot(densitymap, col=cl)
 
-# MULTIFRAME (show two different plots contemporarely)
+# MULTIFRAME (shows different plots at the same time)
 par(mfrow=c(1,2)) #1 row and 2 columns, and they're part of an array
 # and then the two plots 
 plot(densitymap)
