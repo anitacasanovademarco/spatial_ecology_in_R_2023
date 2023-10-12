@@ -1,24 +1,22 @@
-# Why populations disperse over the landscape in a certain manner?
-# install.packages("sdm")
-# install.packages("rgdal", dependencies=T) #now rgdal is inside terra package
+########## SPECIES DISTRIBUTION
 
-#we check the presence of this packages in open the packages we just downloaded without quotes cause now they're inside R
-library(sdm) #exploratory analisys of Species Distribution Modelling (sdm)
+install.packages("sdm")
+install.packages("rgdal", dependencies=T) #now rgdal is inside terra package
+
+#OPEN THE DOWNLOADED PACKAGES (no more quotes cause now they're inside R)
+library(sdm) # sdm = species distribution modelling
 library(terra) # used for spatial functions (predictors)
-library(rgdal) # species
+library(rgdal) # gdal = translator library for raster and vector geospatial data formats 
 
-#GDAL is a translator library for raster and vector geospatial data formats that is released 
-#under an MIT style Open Source License by the Open Source Geospatial Foundatio
-
-#SEARCH A FILE INSIDE A PACKAGE
+#SELECT THE FILE INSIDE A PACKAGE
 file <- system.file("external/species.shp", package="sdm") #inside sdm there's external, which contains the file "species.shp"
-system.file("external/species.shp", package="sdm") #inside sdm there's external, which contains the file "species.shp"
 
-# SHP files are usually called VECTOR FILES, that are series of coordinates
+# shp = files usually called VECTOR FILES, that are series of coordinates
 
-species <- vect(file) #let's import a vector of the information contained in this file: if we run it we get COORDINATE SYSTEM
+species <- vect(file) #let's import a vector of  this file: if we run it we get a COORDINATE SYSTEM
+
 #to see Occurrence just link the vector to Occurrence, like this
-species$Occurrence #code presences and absences: PRESENCE-ABSENCE DATA
+species$Occurrence # PRESENCE-ABSENCE DATA
 #0 is an uncertain data because maybe she's hidden, so let's take it in this case like a REAL 0
 
 plot(species)
@@ -41,17 +39,11 @@ plot(abs)
 dev.off()
 
 #PLOT PRESENCES AND ABSENCES IN TWO DIFFERENT COLORS, one beside the other
-cl1 <- colorRampPalette(c("red"))
-cl2 <- colorRampPalette(c("orange"))
-par(mfrow=c(1,2))
-plot(pres, col=cl1)
-plot(abs, col=cl2)
-#or
 par(mfrow=c(1,2))
 plot(pres, col="dark blue")
 plot(abs, col="light blue")
 
-#IN THE SAME GRAPH, use function point to add them to the first plot, and not plot twice
+#PLOT PRESENCES AND ABSENCES TOGETHER, do so:
 plot(pres, col="dark blue")
 points(abse, col="light blue")
 
