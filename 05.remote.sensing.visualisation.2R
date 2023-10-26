@@ -13,4 +13,4 @@ clb <- colorRampPalette(c("dark grey", "grey", "light grey")) (100)
 plot(b2,col=clb)
 
 #reflectance: ration between the incoming energy and the reflecting energy
-#importn the green band (layer) from sentinel (satellyte) 2
+
