@@ -1,11 +1,13 @@
 # Remote sensing
-install.packages("devtools") #This package is inside the CRAN (Coomprehensive R archive network)
+#where to store the packages? GitHub (not connected to R: it's not controlled) or CRAN (directly conencted to R: it's controlled)
+#to install in CRAN (Coomprehensive R Archive Network), the fucntion is:
+install.packages("devtools")
 install.packages("terra")
 library(devtools) 
 library(terra)
 library(imageRy)
 
-#For installing packages from another site, like GitHub, we use the function
+#to install packages in GitHub, the function is:
 devtools::install_github("ducciorocchini/imageRy")
 
 
