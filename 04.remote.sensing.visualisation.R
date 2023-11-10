@@ -52,4 +52,31 @@ im.plotRGB(stack_sent, r = 3, g = 2, b = 1) #red is the third element, as  the o
 # b2 (blue), b3 (green), b4 (red), b8 (NIR)
 
 
+library (imageRy)
+b2 <- im.import("sentinel.dolomites.b2.tif") # 1.BLUE
+b3<-im.import("sentinel.dolomites.b3.tif") # 2.GREEN
+b4 <- im.import("sentinel.dolomites.b4.tif") # 3.RED
+b8<-im.import("sentinel.dolomites.b8.tif") # 4.NIR
+stack_sent <- c(b2,b3,b4,b8)
+plot(stack_sent)
+
+#if we mount rgb colors we get all the possible colours
+im.plotRGB(stack_sent, 3, 2, 1) #as R=b4, 3rd element of our stack, G=b3, in 2nd position and B=b2, in 1st position)
+#our view
+
+im.plotRGB(stack_sent, 4, 3, 2)
+#with infrared: vegetation becomes red
+
+# CHANGE THE POSITION OF THE NIR
+im.plotRGB(stack_sent, r=3, g=4, b=2)
+im.plotRGB(stack_sent, r=3, g=2, b=4)
+
+#NIR always give more information than we can see
+
+# CORRELATIONS BETWEEN THE BANDS
+pairs(stack_sent)
+
+
+
+
 
