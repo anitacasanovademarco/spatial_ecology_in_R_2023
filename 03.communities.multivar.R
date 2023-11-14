@@ -3,6 +3,7 @@
 #Second exercise-how species are related in time
 
 #Vegetation Analisys
+install.packages("vegan")
 library(vegan)
 data(dune) 
 dune #to see the dataset
