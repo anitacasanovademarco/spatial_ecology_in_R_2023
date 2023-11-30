@@ -1,4 +1,4 @@
-#Relation among species in time
+# MULTIVARIATE ANALISYS of how species are related in TIME 
 install.packages("overlap")
 library(overlap)
 
