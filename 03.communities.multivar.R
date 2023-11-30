@@ -1,5 +1,5 @@
 #In communities, species are overlapping in space and time
-# MULTIVARIATE ANALISYS of: how species are related in SPACE and TIME
+# MULTIVARIATE ANALISYS of how species are related in SPACE 
 
 #Vegetation Analisys
 install.packages("vegan")
