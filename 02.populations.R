@@ -11,7 +11,8 @@ library(spatstat)
 
 #DATA DESCRIPTION
 # Let's use some datasets provided by spatstat, like BEI DATA 
-#(The dataset bei gives the positions of 3605 trees of the species Beilschmiedia pendula (Lauraceae) in a 1000 by 500 metre rectangular sampling region in the tropical rainforest of Barro Colorado Island. )
+#(The dataset bei gives the positions of 3605 trees of the species Beilschmiedia pendula (Lauraceae) 
+# in a 1000 by 500 metre rectangular sampling region in the tropical rainforest of Barro Colorado Island)
 
 # PLOTTING  DATA FROM SPATSTAT (see what it represents)
 plot(bei) 
@@ -26,7 +27,8 @@ plot(bei,cex=.5)
 plot(bei,cex=.2,pch=19) #search the number of R symbols on the internet
 
 #ADDITIONAL DATASETS
-bei.extra # it has two variables: elevation (elev) and gradient (grad). They allow to understand the distribution of bei datas
+bei.extra # it has two variables: elevation (elev) and gradient (grad). 
+# They allow us to understand the distribution of bei datas
 
 plot(bei.extra) #here we have the raster file =! vector file
 
@@ -50,15 +52,16 @@ points(bei, cex=.2)
 #Avoid pictures with a combination of blue, green and red colors as daltonic people can't see them
 
 #Let's change the colors
+# You can find them in this website:
+# http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
 cl <- colorRampPalette(c("black", "red", "orange", "yellow"))(100) #R is capital letters sensitive!!!
-#100 represents the different colors that can be present between the colors chosen
+#100 represents the different colors that can be present between those chosen
 plot(densitymap, col=cl)
 
 #Use yellow colour in a proper way, cause it's the most impacting one
 
 #the quality is much worse if we put a smaller number, like
-cl <- colorRampPalette(c("black", "red", "orange", "yellow"))(4) #R is capital letters sensitive!!!
-#100 represents the different colors that can be present between the colors chosen
+cl <- colorRampPalette(c("black", "red", "orange", "yellow"))(4)
 plot(densitymap, col=cl)
 
 # MULTIFRAME (shows different plots at the same time)
