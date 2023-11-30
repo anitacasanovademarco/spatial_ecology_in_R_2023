@@ -1,18 +1,21 @@
 #In communities, species are overlapping in space and time
-#First exercise: multibvariate analisys-how species are related in space
-#Second exercise-how species are related in time
+# MULTIVARIATE ANALISYS of: how species are related in SPACE and TIME
 
 #Vegetation Analisys
 install.packages("vegan")
 library(vegan)
 data(dune) 
+# Dune is a data frame of observations of 30 species at 20 sites. 
+# The species names are abbreviated to 4+4 letters.
+
 dune #to see the dataset
 #or
 head(dune) #just the first 6 rows
 tail(dune) #just the last 6 rows
-#we see a matrix of amout of individuals in every plot
+#we see a matrix of amout of individuals present in every plot
 
-ord<-decorana(dune) #let's use the function decorana from the package vegan: it means detrended occurrence analysis
+ord<-decorana(dune) #decorana function from the package vegan gives the Detrended Correspoondace Analysis
+# DCA is a multivariate statistical technique used by ecologists to find the main factor or gradient in species-rich but sparse data matrices that tipify ecological community data. 
 #we have to know the length of the new axes
 
 ldc1 = 3.7004 #length decorana 1
@@ -31,9 +34,9 @@ pldc2
 pldc3
 pldc4
 
-#as pldc1 + pldc2 represent the 70% of the total, we can only keep them
+#as pldc1 + pldc2 represent the 70% of the total, we can also keep them only
 
 plot(ord) 
 # names represent species (we see coupling species), numbers represent plots: everything is depicted in a new dimention made by dca1 and 2
-#from the table we can understand the environments
+# from the table we can understand the environments
 
