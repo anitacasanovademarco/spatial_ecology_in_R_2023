@@ -7,22 +7,21 @@ kerinci
 head(kerinci)
 summary(kerinci)
 
-
 #Selecting the first species
-tiger <- kerinci[kerinci$Sps=="tiger",]
+tiger <- kerinci[kerinci$Sps=="tiger",] #Sps=species
 
 #Selecting the tigers time
-tiger <- kerinci[kerinci$Sps=="tiger",] #Sps=species
-kerinci$Timerad <- kerinci$Time*2*pi #we multiply the the linear time to 2 pi greek to have a time in radiants
-timetig <- tiger$Timerad
+timetig <- kerinci$Time*2*pi 
+#we multiply the the linear time to 2 pi greek to have a time in radiants
+
 densityPlot(timetig, rug=TRUE)
 
 #Selecting the macaque
-macaque <- kerinci[kerinci$Sps=="macaque",]
+macaque <- kerinci[kerinci$Sps=="macaque",] #Sps=species
 
 #Selecting the macaque time
-macaque <- kerinci[kerinci$Sps=="macaque",] #Sps=species
-timemac <- macaque$Timerad
+timemac <- macaque$Time*2*pi 
+
 densityPlot(timemac, rug=TRUE)
 
 overlapPlot(timetig,timemac)
