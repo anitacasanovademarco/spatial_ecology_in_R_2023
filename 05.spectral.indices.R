@@ -76,12 +76,8 @@ par(mfrow = c (1,2))
 plot(ndvi1992, col=cl)
 plot(ndvi2006, col=cl)
 
-dev.off()
-clvir <- colorRampPalette(c("violet", "dark blue", "blue", "green", "yellow"))(100) # specifying a color scheme
-plot(ndvi1992, col=clvir)
-plot(ndvi2006, col=clvir)
+#speeding up the calculation of the NDVI, the function is: im.ndvi()
 
-#speeding up the calculation
-
-ndvi2006a <- im.ndvi (m2006, 1, 2) #we can use the function "im.ndvi" instead of the calculations to speed up the calculations.
+ndvi2006a <- im.ndvi (m2006, 1, 2) 
 plot(ndvi2006a, col=cl) 
+
