@@ -72,8 +72,6 @@ plot(diffg, col=cl)
 #so there's a lost of low temperatures (so ice) and increase of temperature
 #red= temperature was higher in the past
 
-############FOR THE EXAM PAPER: take datas from earth observatory or copernicus
-
 #Make a RGB plot using different years
 dev.off()
 im.plotRGB(stackG, r=1,g=2,b=3)
