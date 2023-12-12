@@ -75,9 +75,11 @@ tabout
 # And build a graph
 library(ggplot2)
 
-p<- ggplot2(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identity", fill="white")) #WRONG, CORRECT IT NEXT TIME
+p1<- ggplot(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identity", fill="white")
+p2<- ggplot(tabout, aes(x=class, y=y2006, color=class)) + geom_bar(stat="identity", fill="white")
 # bar plot with the tabout class, aestethics will be the class
 
+p1+p2
 
 
 
