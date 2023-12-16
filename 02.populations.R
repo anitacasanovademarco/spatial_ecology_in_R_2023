@@ -7,7 +7,7 @@ install.packages("spatstat") # QUOTES are needed to protect the package we want 
 #the function library(spatstat) is used to check if the package has already been installed
 library(spatstat)
 
-# we are using data in Markdown, which is  outside R, in order to previously understand how they work
+# we are using data in GitHub, which is  outside R, in order to previously understand how they work
 
 #DATA DESCRIPTION
 # Let's use some datasets provided by spatstat, like BEI DATA 
@@ -16,7 +16,7 @@ library(spatstat)
 
 # PLOTTING  DATA FROM SPATSTAT (see what it represents)
 plot(bei) 
-# as the points are too big for this area, we'll change their shame
+# as the points are too big for this area, we'll change their shape
 
 # CHANGING DATA DIMENSION - cex
 plot(bei,cex=.5)
