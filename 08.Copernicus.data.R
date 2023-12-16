@@ -1,7 +1,7 @@
 library (ncdf4)
 library(terra)
 
-setwd("/Users/anita/Desktop/Unibo/Courses/1st YEAR/1st SEMESTER/Spatial Ecology in R") #set working directory with the path R needs to find the documen
+setwd("/Users/anita/Desktop/Unibo/Courses/1st YEAR/1st SEMESTER/Spatial Ecology in R") #set working directory with the path R needs to find the document
 
 soilm2023<-rast("c_gls_SSM1km_202311220000_CEURO_S1CSAR_V1.2.1.nc")
 soilm2023
@@ -32,6 +32,3 @@ setwd("/Users/anita/Desktop/Unibo/Courses/1st YEAR/1st SEMESTER/Spatial Ecology 
 soilm2023_25<-rast("c_gls_SSM1km_202311250000_CEURO_S1CSAR_V1.2.1.nc")
 soilm2023_25crop<-crop(soilm2023_25,ext1)
 plot(soilm2023_25crop[[1]], col=cl) 
-
-
-
