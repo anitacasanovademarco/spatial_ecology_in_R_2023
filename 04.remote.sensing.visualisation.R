@@ -5,7 +5,7 @@
 # to install them from CRAN (Coomprehensive R Archive Network), the function is: install.packages()
 install.packages("devtools")
 
-# to open the packages (also called libraries in R), the function is always: library()
+# to open the packages, the function is always: library()
 library (devtools) 
 
 # to install them from GitHub, the function is: install_github()
