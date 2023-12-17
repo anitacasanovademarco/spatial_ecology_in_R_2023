@@ -1,5 +1,5 @@
-#Estimating the qualitative and quantitative different between two different images in two different times
-#We need to transform images in classes (land cover, land use, etc.)
+# Estimate the qualitative and quantitative difference between two images taken at different times
+# We need to transform images in classes (land cover, land use, etc.)
 
 #Satellite image of the Alps: green snow, blue pastures, green forests, pink villages
 # We can compare quantitative (points in the graph) and qualitative (images RGB) data, by taking a picture in the image and analyze the waves it reflects
