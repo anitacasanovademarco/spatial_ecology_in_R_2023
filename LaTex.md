@@ -17,3 +17,6 @@
 + To start a new paragraph with an indentation, just leave an empty line after the previous one. If you don't want it, just write \noindent
 + To start a new paragraph, just use the functions \bigskip or \smallskip: it will leave a whole line between the previous and the current one.
 + To modify the defaul 10 pt dimension of the text in the document, just write [12] before the graph parenthesis of \documentclass{article}, like this: \documentclass[12pt]{article}
++ $ sign to do mathematics
+
++ It is read "Latec"
