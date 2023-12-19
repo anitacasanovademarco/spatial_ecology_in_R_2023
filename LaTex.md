@@ -19,4 +19,5 @@
 + To modify the defaul 10 pt dimension of the text in the document, just write [12] before the graph parenthesis of \documentclass{article}, like this: \documentclass[12pt]{article}
 + $ sign to do mathematics
 
-+ It is read "Latec"
+>**Note**
+>It is read "Latec"
