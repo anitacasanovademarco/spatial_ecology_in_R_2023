@@ -162,3 +162,22 @@ install.packages("ncdf4")
 
 
 
+In case Madrid is not fine:
+\documentclass{beamer}
+\usepackage{graphicx} % Required for inserting images
+\usetheme{AnnArbor} % with dots signaling the current slide
+\usecolortheme{spruce}
+\usepackage{listings}
+
+\title{My R project for Spatial Ecology in R}
+\author{Anita Casanova De Marco}
+\date{Academic year 2023-2024}
+\institute []{Alma Mater Studiorum Università di Bologna}
+\logo{\includegraphics[width=0.05\textwidth]{logo.png}}
+
+
+
+
+
+
+
