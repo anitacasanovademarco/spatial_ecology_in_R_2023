@@ -2,7 +2,7 @@
 library(readr)
 
 # Import the dataset into R
-cc_dataset <- read.table("/Users/anita/Desktop/Unibo/Courses/1st YEAR/1st SEMESTER/Statistical Analysis and Modelling/Module 2 statistical/R_group_project/R_group_project/cc_dataset.csv", header = TRUE, sep = ",")
+cc_dataset <- read.table("cc_dataset.csv", header = TRUE, sep = ",")
 
 # See the results
 # size of the dataframe
@@ -22,9 +22,9 @@ cc.df
 # Clean the data
 # change the names
 names(cc.df) <- c("age","education", "place", 
-                    "distance", "travel", 
-                    "plane","cc_belief", "antro_factors", "degree_concern", 
-                    "meat", "dairy_products", "seasonal_veg", "winter_temp", "hours_heat", "prod_orig")
+                  "distance", "travel", 
+                  "plane","cc_belief", "antro_factors", "degree_concern", 
+                  "meat", "dairy_products", "seasonal_veg", "winter_temp", "hours_heat", "prod_orig")
 
 str(cc.df)
 
@@ -150,7 +150,7 @@ cc.df$distance[141]= 2
 cc.df$distance <- as.numeric(cc.df$distance) 
 summary(cc.df$distance)
 mean(cc.df$distance, na.rm = T) 
-var(cc.df$distance, na.rm = T)*143/144 #or mean(cc.df$distance^2)-(mean(cc.df$distance))^2
+var(cc.df$distance, na.rm = T) * 143 / 144 #or mean(cc.df$distance^2)-(mean(cc.df$distance))^2
 sqrt(var(cc.df$distance, na.rm = T)*143/144) # sd  
 
 # The average distance from work / school / university is 15.36594 ± 23.98443 km
@@ -161,13 +161,13 @@ cc.df$education <- factor(cc.df$education, order = TRUE, levels = c("Middle scho
 cc.df$education
 summary(cc.df$education)
 
-perc.walk = 23 *100 /nrow(cc.df)
-perc.bike = 24 *100 /nrow(cc.df)
-perc.bus = 20 *100 /nrow(cc.df)
-perc.train = 19 *100 /nrow(cc.df)
-perc.moto = 5 *100 /nrow(cc.df)
-perc.car.s = 5 *100 /nrow(cc.df)
-perc.car.a = 48 *100 /nrow(cc.df)
+perc.walk = 23 * 100 /nrow(cc.df)
+perc.bike = 24 * 100 /nrow(cc.df)
+perc.bus = 20 * 100 /nrow(cc.df)
+perc.train = 19 * 100 /nrow(cc.df)
+perc.moto = 5 * 100 /nrow(cc.df)
+perc.car.s = 5 * 100 /nrow(cc.df)
+perc.car.a = 48 * 100 /nrow(cc.df)
 
 # The proportions of the different levels of the "travel" variable are: 15.97222% Walk, 16.66667% Bike, 13.88889% Bus, 13.19444% Train, 3.472222% Motorbike, 3.472222% Car (shared), 33.33333% Car (alone) 
 
@@ -243,10 +243,11 @@ cc.df$seasonal_veg[cc.df$seasonal_veg == "100%"] = 100
 cc.df$seasonal_veg[88] = 50
 
 cc.df$seasonal_veg <- as.numeric(cc.df$seasonal_veg)
+summary(cc.df$seasonal_veg)
 cc.df$seasonal_veg
 mean(cc.df$seasonal_veg, na.rm=T)
-var(cc.df$seasonal_veg, na.rm=T)*143/144
-sqrt(var(cc.df$seasonal_veg, na.rm=T)*143/144) #sd
+var(cc.df$seasonal_veg, na.rm=T)* 143 / 144
+sqrt(var(cc.df$seasonal_veg, na.rm=T)* 143 / 144) #sd
 
 # People from the survey use to eat, on average, the 63.50704 ± 24.43183% of seasonal fruit and vegetables
 
@@ -261,7 +262,7 @@ cc.df$winter_temp[cc.df$winter_temp == "20°C"] = 20
 cc.df$winter_temp[cc.df$winter_temp == "20 C"] = 20
 cc.df$winter_temp[cc.df$winter_temp == "20 C "] = 20
 
-cc.df$winter_temp[c(11,51)] = 18.5
+cc.df$winter_temp[c(11,51,90)] = 18.5
 cc.df$winter_temp[c(26,88,93)] = 20.5
 cc.df$winter_temp[c(35,64,65,76,78,95,107,119)] = 19.5
 cc.df$winter_temp[50] = 21.5
@@ -276,6 +277,15 @@ cc.df$winter_temp[141] = 22
 
 cc.df$winter_temp <- as.numeric(cc.df$winter_temp)
 summary(cc.df$winter_temp)
+mean(cc.df$winter_temp, na.rm = T)
+var(cc.df$winter_temp, na.rm = T) * 142 / 143
+sqrt(var(cc.df$winter_temp, na.rm = T) * 142 / 143)
+
+# The average winter temperature in the sample is 19.47587 ± 1.87637 °C 
+
+cc.df[14]
+# correct the variable "hours_heat"
+cc.df$hours_heat
 
 
 # Create a new file with updated values
@@ -316,3 +326,4 @@ vec.dairy <- c("High", "Low", "High","Low", "Medium")
 fct.dairy <- factor(vec.dairy, order = TRUE, levels = c("Low", "Medium", "High")) 
 fct.dairy
 summary(fct.dairy)
+
