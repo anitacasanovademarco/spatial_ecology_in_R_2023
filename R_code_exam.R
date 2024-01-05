@@ -1,3 +1,10 @@
+##### domande prof
+# va bene l'impaginazione di latex anche se non l'abbiamo fatta?
+# different range reflectance tra le immagini trovate
+
+
+
+
 library (ncdf4)
 library(terra)
 
