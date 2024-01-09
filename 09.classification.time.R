@@ -1,7 +1,7 @@
 # Estimate the qualitative and quantitative difference between two images taken at different times
 # We need to transform images in classes (land cover, land use, etc.)
 
-#Satellite image of the Alps: green snow, blue pastures, green forests, pink villages
+# Satellite image of the Alps: green snow, blue pastures, green forests, pink villages
 # We can compare quantitative (points in the graph) and qualitative (images RGB) data, by taking a picture in the image and analyze the waves it reflects
 # Thay we try to guess the element according to the reflectance: water for example reflects NIR and red
 
@@ -13,12 +13,12 @@
 library(terra)
 library(imageRy)
 im.list()
-#Sun pillars are sun regions with high energy
+#S un pillars are sun regions with high energy
 
-#https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter/Solar_Orbiter_s_first_views_of_the_Sun_image_gallery
+# https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter/Solar_Orbiter_s_first_views_of_the_Sun_image_gallery
 
 sun<-im.import("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
-#instant RGB picture, with 3 levels of energy: yellow (higher), brown, black. So, we expect 3 cluters.
+# instant RGB picture, with 3 levels of energy: yellow (higher), brown, black. So, we expect 3 cluters.
 # We have to explain to the softer the numbers of the cluster
 
 sunc<- im.classify(sun, num_clusters = 3)
@@ -30,15 +30,15 @@ m1992<- im.import("matogrosso_l5_1992219_lrg.jpg")
 m2006<- im.import("matogrosso_ast_2006209_lrg.jpg")
 plotRGB(m1992)
 
-m1992c<-im.classify(m1992, num_clusters=2)
-plot(m1992c) #3 replicate of the same image: white class of forest, green human intervention
+m1992c<-im.classify(m1992, num_clusters=2) # amount of classes that we want to see in the image
+plot(m1992c) # 3 replicate of the same image: white class of forest, green human intervention
 
 # Classes: forest = 1, human = 2
 m2006c<-im.classify(m2006, num_clusters=2)
 plot(m2006c)
 
 par(mfrow=c(1,2))
-plot(m1992c[[1]]) #DOUBLE PARENTHESIS to plot choose only the first image
+plot(m1992c[[1]]) # DOUBLE PARENTHESIS to plot choose only the first image
 plot(m2006c[[1]])
 
 # What is the proportion of forest and human classes? function: freq() (calculates the pixels from a certain classes)
@@ -74,6 +74,7 @@ tabout
 
 # And build a graph
 library(ggplot2)
+library(patchwork) # allows to put several graphs together
 
 p1<- ggplot(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identity", fill="white")
 p2<- ggplot(tabout, aes(x=class, y=y2006, color=class)) + geom_bar(stat="identity", fill="white")
