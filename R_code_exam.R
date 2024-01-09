@@ -301,10 +301,11 @@ dev.off()
 
 
 
-# MOVING WINDOW APPROACH FOR DIVERSITY ASSESSMENT
+# MOVING WINDOW APPROACH FOR DIVERSITY ASSESSMENT: focal() function
 
-# calculating the sd in a 3x3 matrix
+#1st case: calculating the sd in a 3x3 matrix with nir band (fc2018[[1]])
 cl2 <- colorRampPalette (c("oldlace", "darkslateblue", "blue4")) (100) # recall
+
 sd3_2018 <- focal(fc2018[[1]], matrix(1/9,3,3), fun=sd)
 plot(sd3_2018)
 plot(sd3_2018, col=cl2, main = "Variability of the land in August 2018", cex.main = .8) 
@@ -321,19 +322,51 @@ plot(sd3_2023, col=cl2, main = "Variability of the land in August 2023", cex.mai
 
 dev.off()
 
-# MULTIVARIATE ANALYSIS: Principal Component Analysis
-# compacting the 3 bands of sentinel-2 into one to better visualize it
+
+
+#2nd case: calculating the sd in a 3x3 matrix with PC1 
+# MULTIVARIATE ANALYSIS (Principal Component Analysis): compacting the 3 bands of sentinel-2 into one to better visualize it
 
 sentpc2018 <- im.pca2(fc2018)
-sentpc2018 # PCI represents .... of the variability
+sentpc2018 # PC1 represents 52 % of the variability
 viridisc <- colorRampPalette(viridis(7))(255)
 
 plot(sentpc2018$PC1, col = viridisc) # only the first principal component
 
 sentpc2023 <- im.pca2(fc2023)
-sentpc2023 # PCI represents ... of the variability
+sentpc2023 # PCI represents 42 % of the variability
 
 plot(sentpc2023$PC1, col = viridisc) # only the first principal component
+
+# calculating sd of pc1 in a 3x3 matrix
+pc1sd3_2018 <- focal(sentpc2018$PC1, matrix(1/9,3,3), fun=sd)
+plot(pc1sd3_2018, col=cl2)
+
+pc1sd3_2023 <- focal(sentpc2023$PC1, matrix(1/9,3,3), fun=sd)
+plot(pc1sd3_2023, col=cl2)
+
+# multiframe
+par(mfrow=c(3,2))
+im.plotRGB(fc2018, 2,1,3)
+im.plotRGB(fc2023, 2,1,3)
+# sd from the variability script:
+plot(sd3_2018, col=cl2) 
+plot(sd3_2023, col=cl2) 
+plot(pc1sd3_2018, col=cl2)
+plot(pc1sd3_2023, col=cl2)
+dev.off()
+
+# stack all the sd layers
+sdstack <- c(sd3_2018, sd3_2023, pc1sd3_2018, pc1sd3_2023)
+plot(sdstack, col = cl3)
+
+# change the names
+names(sdstack) <- c("sd3_2018", "sd3_2023", "pc1sd3_2018", "pc1sd3_2023")
+plot(sdstack, col = cl3)
+
+cl3 <- colorRampPalette (c("darkslategrey", "lightsalmon","lightyellow")) (100)
+
+# the difference between the sd calculated from nir images and pc1 images is subtile
 
 
 
