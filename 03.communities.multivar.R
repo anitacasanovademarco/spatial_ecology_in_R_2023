@@ -14,7 +14,7 @@ head(dune) #just the first 6 rows
 tail(dune) #just the last 6 rows
 #we see a matrix of amout of individuals present in every plot
 
-ord<-decorana(dune) #decorana function from the package vegan gives the Detrended Correspoondace Analysis
+ord<-decorana(dune) #decorana function from the package vegan gives the Detrended Correspondace Analysis
 # DCA is a multivariate statistical technique used by ecologists to find the main factor or gradient in species-rich but sparse data matrices that tipify ecological community data. 
 #we have to know the length of the new axes
 
