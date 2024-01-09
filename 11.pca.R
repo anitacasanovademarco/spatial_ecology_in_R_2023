@@ -10,10 +10,11 @@ sent <- im.import("sentinel.png") #Similaun Glacier
 pairs(sent)
 viridisc <- colorRampPalette(viridis(7))(255)
 
-# person correlation index goes from -1 to +1. we see thaht there's perfect correlation between the visible bands, wile the NIR adds more info so there's no correlation with the others. 
+# Pearson correlation index goes from -1 to +1. We see that there's perfect correlation between the visible bands, wile the NIR adds more info so there's no correlation with the others. 
 
 
 # MULTIVARIATE ANALYSIS
+# Measurement of R based variability with a single layer, which is chosen objectivle with Multivariate Analysis
 # compact the 3 bands of sentinel into one to better visualize it
 
 # we have already seen the DCA (detrended component analysis)
