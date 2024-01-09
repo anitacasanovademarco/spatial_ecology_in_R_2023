@@ -17,7 +17,7 @@ library (imageRy)
 # to import one image, the function is: im.import()
 b2 <- im.import("sentinel.dolomites.b2.tif")
 
-#Information provided from the image (called Reference System): 
+# Information provided from the image (called Reference System): 
 # Word Geodetic System, Universal Transverse Mercator, Coordination of the point + the emisphere (N or S)
 # to know more, you can go to Sentinel-2 in Wikipedia
 
@@ -55,7 +55,7 @@ stack_sent <- c(b2,b3,b4,b8)
 
 im.plotRGB(stack_sent, r = 3, g = 2, b = 1) # our view
 
-im.plotRGB(stack_sent, 4, 3, 2) #with infrared: vegetation becomes red, we get more information
+im.plotRGB(stack_sent, 4, 3, 2) # with infrared: vegetation becomes red, we get more information
 
 # CHANGE THE POSITION OF THE NIR
 im.plotRGB(stack_sent, r=3, g=4, b=2)
