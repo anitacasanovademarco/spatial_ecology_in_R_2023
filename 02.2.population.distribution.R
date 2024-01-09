@@ -1,4 +1,3 @@
-########## SPECIES DISTRIBUTION
 # why populations disperse in a certain manner over the landscape?
 #INSTALL PACKAGES (with quotes cause they're outside R)
 install.packages("sdm")
