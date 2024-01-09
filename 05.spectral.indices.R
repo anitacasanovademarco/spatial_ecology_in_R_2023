@@ -7,12 +7,11 @@ library(terra)
 library(imageRy)
 im.list()
 
-m1992<- im.import("matogrosso_l5_1992219_lrg.jpg") # image from satellite LANDSAT (1962)
-# it's a processed image, where bands 1=NIR, 2=RED, 3=GREEN
-im.plotRGB(m1992, r=1, g=2, b=3) 
-# in this way, the NIR bands will be depicted in red: they're typical of an healthy vegetation
+m1992<- im.import("matogrosso_l5_1992219_lrg.jpg") # image from satellite LANDSAT (1962) # processed image, where bands 1=NIR, 2=RED, 3=GREEN
+im.plotRGB(m1992, r=1, g=2, b=3) # in this way, the NIR bands will be depicted in red: they're typical of an healthy vegetation
 # the RED ones will be represented in green: they're typical of unhealthy or absent vegetation
 # and the GREEN one will be painted in blue
+
 im.plotRGB(m1992, r=2, g=1, b=3)
 im.plotRGB(m1992, r=2, g=3, b=1)
 
