@@ -9,7 +9,7 @@ install.packages("devtools")
 library (devtools) 
 
 # to install them from GitHub, the function is: install_github()
-install_github("ducciorocchini/imageRy")  
+install_github("ducciorocchini/imageRy") # devtools package allows to download packages outside CRAN
 library (imageRy)
 
 # to see all the possible images from the imageRy package, the function is: im.list()
