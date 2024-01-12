@@ -1,12 +1,13 @@
+
+# This is an R project about a spatio-ecological monitoring in the Valbelluna area (BL, Italy), where Surface Soil Moisture and Land Cover parameters were analysed.
+
+
 library (ncdf4)
 library(terra)
 library(ggplot2)
 library(imageRy)
 library(viridis)
 library(patchwork)
-
-########## SPATIO-ECOLOGICAL MONITORING IN THE VALBELLUNA AREA
-
 
 
 
@@ -195,23 +196,30 @@ plot(ndvi2018, col = cl3, main = "NDVI of August 2018", cex.main = .7)
 plot(ndvi2023, col = cl3, main = "NDVI of August 2023", cex.main = .7)
 dev.off()
 
-# Most of the studyarea reflects NDVI values between 0.6 and 0.8, suggesting the presence of high or mid-high canopy cover with high vigour. As values decrease towards 0, the vegetation can both decrease in size or be more stressed. Around 0 values the soil is bare, as suggested by the shape of the riverbed. Brown and so negative values are occupied by water bodies such as lakes and big rivers. In 5 years the main change consists in a little decrease in the vegetation cover or stress of 0.1 or 0.2 NDVI values.
+# Most of the study area reflects NDVI values between 0.6 and 0.8, suggesting the presence of high or mid-high canopy cover with high vigour (https://www.agricolus.com/en/vegetation-indices-ndvi-ndmi/). As values decrease towards 0, the vegetation can both decrease in size or be more stressed. Considering the high temperatures recorded in summer 2023 (https://climate.copernicus.eu/summer-2023-hottest-record), and the vast area that is experiencing the decrease in NIR reflection, the most probable option for this phenomenon is the increase in stressed leaves. 
+# Around 0 values the soil is bare, as suggested by the shape of the riverbed. Brown and so negative values are occupied by water bodies such as lakes and big rivers. In 5 years the main change consists in a little decrease in the vegetation cover or stress of 0.1 or 0.2 NDVI values.
 
 
 # CLASSIFICATION OVER TIME
 
-# classes: dense vegetation = 1, bare soil and water bodies = 2, low vegetation = 3
 fc2018c <- im.classify(fc2018, num_clusters=3)
-names(fc2018c) <- c("dense vegetation", "low vegetation", "absent vegetation")
-plot(fc2018c[[1]], main = "classes 2018")
+
+class_names <- c("absent", "stressed", "healthy")
+
+plot(fc2018c[[1]], main = "Classes from 2018", type = "classes", levels = class_names)
+
 
 fc2023c <- im.classify(fc2023, num_clusters=3)
-names(fc2023c) <- c("dense vegetation", "low vegetation", "absent vegetation")
-plot(fc2023c[[1]], main = "classes 2023")
+
+plot(fc2023c[[1]], main = "Classes from 2023", type = "classes", levels = class_names)
+
+
 
 par(mfrow=c(2,1))
-plot(fc2018c[[1]], main = "classes 2018")
-plot(fc2023c[[1]], main = "classes 2023")
+plot(fc2018c[[1]], main = "Classes from 2018", type = "classes", levels = class_names)
+plot(fc2023c[[1]], main = "Classes from 2023", type = "classes", levels = class_names)
+dev.off()
+
 
 # proportion of the classes
 f2018 <- freq(fc2018c[[1]])
@@ -233,13 +241,14 @@ p2018
 p2023 <- f2023 * 100 / tot2023
 p2023
 
-# in conclusion, in 2018, dense vegetation = 49.23408 %, absent vegetation = 14.20120 %, low vegetation = 36.56472 %. In 2023, dense vegetation = 36.10679 %, absent vegetation = 11.54511 %, low vegetation = 52.34810 %.
+# In conclusion, vegetation classes had, in 2018, the following proportions: absent = 13.98185 %, stressed = 36.56682 %, healthy = 49.45133 %. In 2023, instead, the proportions were: absent = 11.54579 %, stressed = 36.10611 %, healthy = 52.34810 %.
+# Classes were chosen from the environmental elements that could be recognized by the images: absent vegetation is represented by rocks and water bodies, stressed one is represented by the fields where the canopy is absent due to regular cut of the grass, while healthy vegetation is represented by the natural forest canopy.
 
-# Final table
+# Final tables
 # build the columns
-class<- c("dense", "absent", "low")
-y2018<- c(49, 14, 37) 
-y2023<- c(36, 12, 53) 
+class<- c("absent", "stressed", "healthy")
+y2018<- c(14, 37, 49) 
+y2023<- c(12, 36, 52) 
 
 # assign them to the dataframe
 tabout <- data.frame(class, y2018, y2023)
@@ -262,13 +271,12 @@ p2<- ggplot(tabout, aes(x=class, y=y2023, fill = class)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5)) 
 
-
 p1+p2
 
 # Barplot with multiple groups
 df2 <- data.frame(year=rep(c("2018", "2023"), each=3),
-                  dose=c("dense", "absent", "low"),2,
-                  len=c(49, 14, 37, 36, 12, 53))
+                  dose=c("absent", "stressed", "healthy"),2,
+                  len=c(14, 37, 49, 12, 36, 52))
 
 # Stacked barchart 
 ggplot(data=df2, aes(x=dose, y=len, fill=year)) +
@@ -276,12 +284,11 @@ ggplot(data=df2, aes(x=dose, y=len, fill=year)) +
   geom_text(aes(label=len), vjust=0.5, color="black",
             position = position_stack(vjust =0.5), size=4.5)+
    scale_fill_brewer(palette="Paired") + 
-    ggtitle("Vegetation cover change") + xlab("Class") + ylab("Values")+
+    ggtitle("Vegetation Cover Change") + xlab("Class") + ylab("Values")+
      theme_minimal()+
       theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
 
-
-# with this graph we can simultaneously compare changes in total amounts and see sharp differences at the item level, 
+# In this graph we can simultaneously compare the little changes of the proportions of the classes in total amounts, like the increase of healthy vegetation passing from 2018 to 2023.
 
 # Combined barchart
 ggplot(data=df2, aes(x=dose, y=len, fill=year)) +
@@ -289,12 +296,12 @@ ggplot(data=df2, aes(x=dose, y=len, fill=year)) +
   geom_text(aes(label=len), vjust=1.6, color="black",
           position = position_dodge(0.9), size=4.5)+
    scale_fill_brewer(palette="Paired") + 
-    ggtitle("Vegetation cover change") + xlab("Class") + ylab("Values")+
+    ggtitle("Vegetation Cover Change") + xlab("Class") + ylab("Values")+
      theme_minimal()+
       theme(plot.title = element_text(face = "bold", hjust = 0.5)) 
 
-# with this graph we clearly notice the switch over time of the vegetation cover in the study area, from dense vegetation to low vegetation.
-                                                            
+# In this graph we clearly notice that there is no switch of the vegetation cover over time, and that the amounts are comparable. 
+
 # codes from: http://www.sthda.com/english/wiki/ggplot2-barplots-quick-start-guide-r-software-and-data-visualization
 
 dev.off()
@@ -315,8 +322,8 @@ plot(sd3_2023)
 plot(sd3_2023, col=cl2, main = "Variability of the land in August 2023", cex.main = .8) 
 
 par(mfrow=c(2,1))
-plot(sd3_2018, col=cl2, main = "Variability of the land in August 2018", cex.main = .8) 
-plot(sd3_2023, col=cl2, main = "Variability of the land in August 2023", cex.main = .8) 
+plot(sd3_2018, col=cl2, main = "Variability of the land in August 2018 (nir band)", cex.main = .8) 
+plot(sd3_2023, col=cl2, main = "Variability of the land in August 2023 (nir band)", cex.main = .8) 
 
 # the study area remained quite unchanged over time, showing an overall homogeneous aspect a part from some fields where rocks presence increase the variability of the land.
 
@@ -340,10 +347,10 @@ plot(sentpc2023$PC1, col = viridisc) # only the first principal component
 
 # calculating sd of pc1 in a 3x3 matrix
 pc1sd3_2018 <- focal(sentpc2018$PC1, matrix(1/9,3,3), fun=sd)
-plot(pc1sd3_2018, col=cl2)
+plot(pc1sd3_2018, col=cl2, main = "Variability of the land in August 2018 (PC1)", cex.main = .8)
 
 pc1sd3_2023 <- focal(sentpc2023$PC1, matrix(1/9,3,3), fun=sd)
-plot(pc1sd3_2023, col=cl2)
+plot(pc1sd3_2023, col=cl2, main = "Variability of the land in August 2023 (PC1)", cex.main = .8)
 
 # multiframe
 par(mfrow=c(3,2))
@@ -361,16 +368,10 @@ sdstack <- c(sd3_2018, sd3_2023, pc1sd3_2018, pc1sd3_2023)
 plot(sdstack, col = cl3)
 
 # change the names
-names(sdstack) <- c("sd3_2018", "sd3_2023", "pc1sd3_2018", "pc1sd3_2023")
-plot(sdstack, col = cl3)
+names(sdstack) <- c("NIR band from 2018", "NIR band from 2023", " PC1 from 2018", " PC1 from 2023")
+plot(sdstack, col = cl2)
 
 cl3 <- colorRampPalette (c("darkslategrey", "lightsalmon","lightyellow")) (100)
 
-# the difference between the sd calculated from nir images and pc1 images is subtile
-
-
-
-
-
-
+# the difference between the sd calculated from nir images and pc1 images is subtile, but a decrease in precision from PC1 method is recognizable by hte fact that the change from 2018 to 203 is increased. Anyway, both images show a decrease in land variability and higher values in the area occupied by rocks and the river.
 
