@@ -29,7 +29,7 @@ The data we collected is made of people's answers (free or multiple choice) that
 
 
 
->**Note **
+>**Note**
 > Seguire le indicazioni che ha messo la prof su virtuale
 
 
