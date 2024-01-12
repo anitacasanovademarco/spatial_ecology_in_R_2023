@@ -28,8 +28,8 @@ The data we collected is made of people's answers (free or multiple choice) that
 2. Then, after creating an R project, with the read.table() function we imported the dataset into the R file
 
 
-!!! 
->**!!! **
+
+>**Note **
 > Seguire le indicazioni che ha messo la prof su virtuale
 
 
