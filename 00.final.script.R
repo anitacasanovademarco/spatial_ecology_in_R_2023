@@ -8,71 +8,66 @@
 # 02.2 Population distribution
 # 03.1 Community multivariate analysis
 # 03.2 Community overlap
-# 04 Remote sensing data visualisation
-# 05 Spectral indices
-# 06 Time series
-# 07 External data import
-# 08 Copernicus data
-# 09 Classification
-# 10 Variability
-# 11 Principal Component Analysis
+# 04. Remote sensing data visualisation
+# 05. Spectral indices
+# 06. Time series
+# 07. External data import
+# 08. Copernicus data
+# 09. Classification
+# 10. Variability
+# 11. Principal Component Analysis
 
 
 # ----------------------
 
 # 01 Beginning
-
 # Here I can write anything I want
 
-# R as a caluclator
+# R as works as calculator
 3+4
 
-# Assign to an object
+# Make an assignment to create a variable
 zima <- 2 + 3
 
 duccio <- 5 + 3
 
-# Calculations
+# Perform calculations with the recently created variables
 zima * duccio
 final <- zima * duccio
 
 
-##### Array
-# they're functions
-# fuctions always have parenthesis and inside them there're the arguments
-
-# Examples
+##### Data structures: vectors (unidimensional) < matrices (bidimensional) < arrays (multidimensional)
+# Vectors: remember to use paranthesis!
 sophi <- c(10,20,30,50,70) # microplastics
 paula <- c(100, 500, 600, 1000, 2000) #people
 
-# we can plot them together
-plot(paula, sophi, xlab="number of people", ylab="microplastics")
-
-# we can also previously assign paula and sophi to some objects
+# assign them to new updated variables
 people <- paula
 microplastics <- sophi
-plot (people, microplastics, pch=19, cex=2, col="blue") # pch gives the shape of the symbols in R, cex represents the size, col for the color
 
-# we can find the symbols in this site:
+# plot them together
+plot(people, microplastics, xlab="number of people", ylab="microplastics") 
 
-# http://www.sthda.com/english/wiki/r-plot-pch-symbols-the-different-point-shapes-available-in-r
+# use new symbols, colors and dimension
+plot (people, microplastics, pch=19, cex=2, col="blue") # pch changes the symbol, cex changes the size, col changes the color
+
+# find the symbols in this site: http://www.sthda.com/english/wiki/r-plot-pch-symbols-the-different-point-shapes-available-in-r
 
 # ----------------------
 
 # 02.1 Population densities
-
-# Codes related to POPULATION GROWTH
-
 # Let's install spatstat, which allows us to make a SPATIAL POINT PATTERN ANALISYS
 
 install.packages("spatstat") # QUOTES are needed to protect the package we want to install which is outside R
 
-#the function library(spatstat) is used to check if the package has already been installed
+# the function library(spatstat) is used to check if the package has already been installed and to open it at every R session
+# quotes are not needed as the package has already been installed from outside R
+
 library(spatstat)
 
 # we are using data in GitHub, which is  outside R, in order to previously understand how they work
 
-#DATA DESCRIPTION
+# DATA DESCRIPTION
 # Let's use some datasets provided by spatstat, like BEI DATA 
 #(The dataset bei gives the positions of 3605 trees of the species Beilschmiedia pendula (Lauraceae) 
 # in a 1000 by 500 metre rectangular sampling region in the tropical rainforest of Barro Colorado Island)
@@ -86,10 +81,10 @@ plot(bei,cex=.5)
 
 # why are the trees clumbed in some area?
 
-#CHANGING THE SYMBOL  - pch
+# CHANGING THE SYMBOL  - pch
 plot(bei,cex=.2,pch=19) #search the number of R symbols on the internet
 
-#ADDITIONAL DATASETS
+# ADDITIONAL DATASETS
 bei.extra # it has two variables: elevation (elev) and gradient (grad). 
 # They allow us to understand the distribution of bei datas
 
@@ -100,32 +95,38 @@ bei.extra$elev  #$ sign links elevation to the dataset
 plot(bei.extra$elev) 
 elevation <- plot(bei.extra$elev)  #elevation has been assignet to an homonimous object, simple to find
 
-#second method to select elements
-bei.extra[1] #take the fist element, so it's another way to isolate elevation
+# second method to select elements
+bei.extra[1] # take the fist element, so it's another way to isolate elevation
 elevation2 <- bei.extra[[1]]
 plot(elevation2)
 
-# INTERPOLATION: passing from points to a continuous surface 
-densitymap<-density(bei) #the densitymap gives us info about the distribution of pixel
+# INTERPOLATION: infer values within the range covered by the data
+# tt is possible by passing from points to a continuous surface called DENSITY MAP
+densitymap <- density(bei) # the densitymap gives us info about the distribution of pixel
 plot(densitymap)
 
-#Let's overlap  bei points to the densitymap
+# let's overlap  bei points to the densitymap
 points(bei, cex=.2)
 
-#Avoid pictures with a combination of blue, green and red colors as daltonic people can't see them
+######## IMPORTANT: avoid pictures with a combination of blue, green and red colors as daltonic people can't see them
 
-#Let's change the colors
-# You can find them in this website:
-# http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
-cl <- colorRampPalette(c("black", "red", "orange", "yellow"))(100) #R is capital letters sensitive!!!
-#100 represents the different colors that can be present between those chosen
-plot(densitymap, col=cl)
+# let's change the colors
+# find new colors in the site: http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
 
-#Use yellow colour in a proper way, cause it's the most impacting one
+cl <- colorRampPalette(c("black", "red", "orange", "yellow"))(100) # 100 represents the different colors that can be present between those chosen
 
-#the quality is much worse if we put a smaller number, like
+# indeed, the quality is much worse if we put a smaller number, like
+
 cl <- colorRampPalette(c("black", "red", "orange", "yellow"))(4)
 plot(densitymap, col=cl)
+
+######## IMPORTANT: R is case sensitive
+
+plot(densitymap, col=cl)
+
+####### TIP: use yellow colour in a proper way, cause it's the most impacting one
+
+
 
 # MULTIFRAME (shows different plots at the same time)
 par(mfrow=c(1,2)) #1 row and 2 columns, and they're part of an array
@@ -141,131 +142,134 @@ plot(elev)
 # ----------------------
 
 # 02.2 Population distribution
-
 # why populations disperse in a certain manner over the landscape?
-#INSTALL PACKAGES (with quotes cause they're outside R)
-install.packages("sdm")
-install.packages("rgdal", dependencies=T) #Warning Message: rgdal will be retired cause it'll be included in terra package
 
-#OPEN THE DOWNLOADED PACKAGES (no more quotes cause now they're inside R)
+# Sdm and rgdal packages required
+
+install.packages("sdm")
+install.packages("rgdal", dependencies=T) #W arning Message: rgdal will be retired cause it'll be included in terra package
+
+# open the packages
+
 library(sdm) # Species Distribution Modelling
 library(terra) # spatial predictors, that are environmental variables
 library(rgdal) # translator library for raster and vector geospatial data formats 
 
-#SELECT THE FILE INSIDE THE PACKAGE sdm
-file <- system.file("external/species.shp", package="sdm") 
-# sdm have vector files and images
+# select a file from the sdm package
 
-#########let's import a vector, which is a coordinate system (function: vect)
+file <- system.file("external/species.shp", package="sdm") # sdm have vector files and images
+
+###### let's import a VECTOR, which is a coordinate system, with the function: vect()
 species <- vect(file) 
 
-#to see Occurrence just link the vector to Occurrence with the $
-species$Occurrence # PRESENCE-ABSENCE DATA
-#0 is an uncertain data because maybe she's hidden, so let's take it in this case like a REAL 0
+# to see Occurrence just link the vector to Occurrence with the $
+species$Occurrence # PRESENCE-ABSENCE DATA: the presence is objective, the absence could be due to a sampling bias
+# in this case, for study purpuses, let's take each 0 like a real 0
 
 plot(species)
 
-#SELECT ONLY PRESENCES OR ABSENCES
+# select only presences or absences
 
-pres<-species[species$Occurrence==1,]  #we write 1 cause we need the 1 value, which is the presence
+pres <- species[species$Occurrence==1,]  # we write 1 cause we need the 1 value, which is the presence
 species[species$Occurrence==1,]
 plot(pres)
-abs<-species[species$Occurrence==0,] #or
-abs<-species[species$Occurrence=!1,]
+abs <- species[species$Occurrence==0,] # or
+abs <- species[species$Occurrence=!1,]
 plot(abs)
 
-#PLOT PRESENCES AND ABSENCES, one beside the other (like last time)
+# plot presences and absences together, one beside the other (like last time)
 par(mfrow=c(1,2))
 plot(pres)
 plot(abs)
 
-#TO CLOSE THE GRAPHIC
+# to delete the graphics
 dev.off()
 
-#PLOT PRESENCES AND ABSENCES IN TWO DIFFERENT COLORS, one beside the other
+# plot presences and absences together, in two different colors, one beside the other
 par(mfrow=c(1,2))
 plot(pres, col="dark blue")
 plot(abs, col="light blue")
 
-#PLOT PRESENCES AND ABSENCES TOGETHER, do so:
+# we can also do this:
 plot(pres, col="dark blue")
 points(abse, col="light blue")
 
-######let's import an image (function: rast)
-#Elevation predictor
+###### let's import an IMAGE with the function: rast()
+# Elevation predictor
 elev <- system.file("external/elevation.asc", package="sdm") #asc is an extention of sdm and it's a type of file, like png 
-elevmap <-rast(elev) 
+elevmap <- rast(elev) 
 plot(elevmap)
 points(pres,cex=0.5) #we see that the specie, which is in this case, Rana temporaria, is avoiding a valley. More, it's not choosing very low and very high elevations
 
-#Temperature predictor
+# Temperature predictor
 temp <- system.file("external/temperature.asc", package="sdm") 
 tempmap <-rast(temp) 
 plot(tempmap)
 points(pres,cex=0.5)
 
-#Vegetational cover
+# Vegetational cover
 veg <- system.file("external/vegetation.asc", package="sdm") 
 vegmap <-rast(veg) 
 plot(vegmap)
 points(pres,cex=0.5)
 
-#Precipitation predictor
+# Precipitation predictor
 prec <- system.file("external/precipitation.asc", package="sdm") 
 precmap <-rast(prec) 
 plot(precmap)
 points(pres,cex=0.5)
 
-#Final multiframe
+# Final multiframe
 par(mfrow=c(2,2))
 
-#elevation
+# elevation
 plot(elevmap)
 points(pres,cex=0.5)
 
-#temperature
+# temperature
 plot(tempmap)
 points(pres,cex=0.5)
 
-#vegetation
+# vegetation
 plot(vegmap)
 points(pres,cex=0.5)
 
-#precipitation
+# precipitation
 plot(precmap)
 points(pres,cex=0.5)
 
 # ----------------------
 
-# 03 Community multivariate analysis
+# 03.1 Community multivariate analysis
+# In communities, species are overlapping in space and time: let's analyse them separated to better understand them
 
-#In communities, species are overlapping in space and time
-# MULTIVARIATE ANALISYS of how species are related in SPACE 
+# Multivariate analysis of species overlap in SPACE:
 
-#Vegetation Analisys
+# Vegetation Analisys
 install.packages("vegan")
 library(vegan)
 data(dune) 
 # Dune is a data frame of observations of 30 species at 20 sites. 
 # The species names are abbreviated to 4+4 letters.
 
-dune #to see the dataset
-#or
-head(dune) #just the first 6 rows
-tail(dune) #just the last 6 rows
-#we see a matrix of amout of individuals present in every plot
+dune # to see the dataset
+# or
+head(dune) # just the first 6 rows
+tail(dune) # just the last 6 rows
+# we see a matrix of amout of individuals present in every plot
 
-ord<-decorana(dune) #decorana function from the package vegan gives the Detrended Correspoondace Analysis
-# DCA is a multivariate statistical technique used by ecologists to find the main factor or gradient in species-rich but sparse data matrices that tipify ecological community data. 
-#we have to know the length of the new axes
+ord <- decorana(dune) # decorana function from the package vegan gives the Detrended Correspondace Analysis
+# DCA is a multivariate statistical technique used by ecologists to find the main factor or gradient in species-rich but sparse data matrices that tipify ecological community data
 
-ldc1 = 3.7004 #length decorana 1
+# set the length of the new axes
+
+ldc1 = 3.7004 # length decorana 1
 ldc2 = 3.1166 
 ldc3 = 1.30055 
 ldc4 = 1.47888
 total = ldc1 + ldc2 + ldc3 + ldc4
 
-pldc1 = ldc1 * 100/total #percentage of every axes
+pldc1 = ldc1 * 100/total # percentage of every axes
 pldc2 = ldc2 * 100/total
 pldc3 = ldc3 * 100/total
 pldc4 = ldc4 * 100/total
@@ -275,17 +279,17 @@ pldc2
 pldc3
 pldc4
 
-#as pldc1 + pldc2 represent the 70% of the total, we can also keep them only
+# as pldc1 + pldc2 represent the 70% of the total, we can also keep them only
 
 plot(ord) 
 # names represent species (we see coupling species), numbers represent plots: everything is depicted in a new dimention made by dca1 and 2
-# from the table we can understand the environments
+# from the distribution we can hypothesize the environmental parameters affecting the species distribution
 
 # ----------------------
 
 # 03.2 Community overlap
+# Multivariate analysis of species overlap in TIME:
 
-# MULTIVARIATE ANALISYS of how species are related in TIME 
 install.packages("overlap")
 library(overlap)
 
@@ -294,32 +298,33 @@ kerinci
 head(kerinci)
 summary(kerinci)
 
-# Selecting the first species
+# select the first species: TIGER
 tiger <- kerinci[kerinci$Sps=="tiger",] # Sps=species
 
-# Selecting the tigers time
-timetig <- kerinci$Time*2*pi 
-# we multiply the the linear time to 2 pi greek to have a time in radiants
+# select its time
+timetig <- kerinci$Time*2*pi # time in radiants: multiply the linear time to 2 pi greek 
 
+# plot it
 densityPlot(timetig, rug=TRUE)
 
-# Selecting the macaque
+# selecting the second species: MACAQUE
 macaque <- kerinci[kerinci$Sps=="macaque",] # Sps=species
 
-# Selecting the macaque time
+# select its time
 timemac <- macaque$Time*2*pi 
 
+# plot it
 densityPlot(timemac, rug=TRUE)
 
+#overlap the tiger's time
 overlapPlot(timetig,timemac)
 
 # ----------------------
 
-# 04 Remote sensing data visualisation
-
-# SATELLITE DATA VISUALIZING
+# 04. Remote sensing data visualisation
 # Where to store additional packages, not present in R? 
-# GitHub (not connected to R: it's not controlled) or CRAN (directly conencted to R: it's controlled)
+
+# packages can be stored in GitHub (not connected to R: it's not controlled) or CRAN (directly conencted to R: it's controlled)
 
 # to install them from CRAN (Coomprehensive R Archive Network), the function is: install.packages()
 install.packages("devtools") # devtools package allows to download packages outside CRAN
@@ -355,20 +360,20 @@ plot(b4,col=c3)
 plot(b8, col=c4) 
 
 
-###### # STACK IMAGES
+###### STACK IMAGES
 # they're a function that plots all the selected images together, one over the other (in this case, four bands all together)
 # RGB SPACE = Red, Green and Blue components that build other colours by overlapping
-# 1.BLUE
+# BLUE
 b2 <- im.import("sentinel.dolomites.b2.tif") 
 
-# 2.GREEN
+# GREEN
 b3<-im.import("sentinel.dolomites.b3.tif") 
 
-# 3.RED
+# RED
 b4 <- im.import("sentinel.dolomites.b4.tif") 
 
-# 4.NIR
-b8<-im.import("sentinel.dolomites.b8.tif") 
+# NIR
+b8 <- im.import("sentinel.dolomites.b8.tif") 
 
 stack_sent <- c(b2,b3,b4,b8)
 
@@ -376,21 +381,22 @@ im.plotRGB(stack_sent, r = 3, g = 2, b = 1) # our view
 
 im.plotRGB(stack_sent, 4, 3, 2) # with infrared: vegetation becomes red, we get more information
 
-# CHANGE THE POSITION OF THE NIR
+# change the position of NIR band to see it in different colors
 im.plotRGB(stack_sent, r=3, g=4, b=2)
 im.plotRGB(stack_sent, r=3, g=2, b=4)
 
 
-# CORRELATIONS BETWEEN THE BANDS
+# correlation between the bands
 pairs(stack_sent)
 
 # ----------------------
 
-# 05 Spectral indices
+# 05. Spectral indices
+# Vegetation Cover Change between 1992 and 2006 
 
-# VEGETATION INDEX in 1992 and 2006 to see the evolution of the area
 install.packages("ggplot2")
 install.packages("viridis")
+
 library(ggplot2)
 library(viridis)
 library(terra)
@@ -472,7 +478,7 @@ plot(ndvi2006a, col=cl)
 
 # ----------------------
 
-# 06 Time series
+# 06. Time series
 
 # TIME SERIES are series of data (images) scattered in time 
 library(terra)
