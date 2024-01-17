@@ -1,11 +1,11 @@
 
-# This is an R project about a spatio-ecological monitoring in the Valbelluna area (BL, Italy), where Surface Soil Moisture and Land Cover parameters were analysed.
+# This is an R project about a spatio-ecological multitemporal analysis in the Valbelluna area (BL, Italy), for the Spatial Ecology in R - Monitoring Ecosystem Changes and Functioning Master course. 
+# The change in two environmental parameters was analysed: Surface Soil Moisture and Vegetation Cover.
 
 
 library (ncdf4)
 library(terra)
 library(ggplot2)
-library(imageRy)
 library(viridis)
 library(patchwork)
 
