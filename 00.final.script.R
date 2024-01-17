@@ -828,7 +828,7 @@ sentpc <- im.pca2(sent)
 
 # it says that the principal component will show the 71% of the variability, the second 53% etc.
 
-pc1 <- sentpc$PC1 #we choose only the first principal component
+pc1 <- sentpc$PC1 # we choose only the first principal component
 plot(pc1, col=viridisc)
 
 # calculating sd onto of pc1 in a 3x3 matrix
@@ -866,7 +866,7 @@ plot(sdstack, colr = viridisc)
 names(sdstack) <- c("sd3", "sd7", "pc1sd3", "pc1sd7")
 plot(sdstack, col = viridisc)
 
-#focal can also be used for other statistics: mean, coefficent variation etc.
+# focal can also be used for other statistics: mean, coefficent variation etc.
 
 
 # ----------------------
