@@ -8,6 +8,7 @@ library(terra)
 library(ggplot2)
 library(viridis)
 library(patchwork)
+library(imageRy)
 
 
 
@@ -325,6 +326,11 @@ par(mfrow=c(2,1))
 plot(sd3_2018, col=cl2, main = "Variability of the land in August 2018 (nir band)", cex.main = .8) 
 plot(sd3_2023, col=cl2, main = "Variability of the land in August 2023 (nir band)", cex.main = .8) 
 
+
+par(mfrow=c(2,1))
+plot(sd3_2018, main = "Variability of the land in August 2018 (nir band)", cex.main = .8) 
+plot(sd3_2023, main = "Variability of the land in August 2023 (nir band)", cex.main = .8) 
+
 # the study area remained quite unchanged over time, showing an overall homogeneous aspect a part from some fields where rocks presence increase the variability of the land.
 
 dev.off()
@@ -362,6 +368,12 @@ plot(sd3_2023, col=cl2)
 plot(pc1sd3_2018, col=cl2)
 plot(pc1sd3_2023, col=cl2)
 dev.off()
+
+par(mfrow=c(2,2))
+plot(sd3_2018, col=cl2) 
+plot(sd3_2023, col=cl2) 
+plot(pc1sd3_2018, col=cl2)
+plot(pc1sd3_2023, col=cl2)
 
 # stack all the sd layers
 sdstack <- c(sd3_2018, sd3_2023, pc1sd3_2018, pc1sd3_2023)
