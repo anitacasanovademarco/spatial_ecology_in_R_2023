@@ -126,8 +126,6 @@ plot(densitymap, col=cl)
 
 ####### TIP: use yellow colour in a proper way, cause it's the most impacting one
 
-
-
 # MULTIFRAME (shows different plots at the same time)
 par(mfrow=c(1,2)) #1 row and 2 columns, and they're part of an array
 # and then the two plots 
@@ -359,7 +357,6 @@ plot(b3,col=c2)
 plot(b4,col=c3)
 plot(b8, col=c4) 
 
-
 ###### STACK IMAGES
 # they're a function that plots all the selected images together, one over the other (in this case, four bands all together)
 # RGB SPACE = Red, Green and Blue components that build other colours by overlapping
@@ -384,7 +381,6 @@ im.plotRGB(stack_sent, 4, 3, 2) # with infrared: vegetation becomes red, we get 
 # change the position of NIR band to see it in different colors
 im.plotRGB(stack_sent, r=3, g=4, b=2)
 im.plotRGB(stack_sent, r=3, g=2, b=4)
-
 
 # correlation between the bands
 pairs(stack_sent)
