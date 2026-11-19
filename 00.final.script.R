@@ -420,6 +420,8 @@ pairs(stack_sent)
 
 install.packages("ggplot2")
 install.packages("viridis")
+install.packages("imageRy")
+install.packages("terra")
 
 library(ggplot2)
 library(viridis)
@@ -587,15 +589,15 @@ im.plotRGB(stackG4, r=1,g=2,b=3)
 
 # ---------------------- #
 
-## 07 External data import ####
+# 07 External data import ####
 library(terra)
 
-# 1 st Step: explain to R which folder we are gonna use (called WORKING DIRECTORY) with the function: setwd("pathway for the document")
-setwd("/Users/anita/Desktop") #if we use always the same folder, the command working directory can be always the same
+# First we set the WORKING DIRECTORY, i.e. the folder where we're going to save the R document, with the function: setwd
+setwd("//Users/anita/Desktop/Unibo/Courses from Global Change Ecology/Spatial Ecology in R") # if we use always the same folder, the command working directory can be always the same
+?setwd
 
 # Import the data using the function: rast("name of the document")
-
-Najaf2003 <- rast("najafiraq_etm_2003140_lrg.jpg") #like function im.import
+Najaf2003 <- rast("najafiraq_etm_2003140_lrg.jpg") # like function im.import
 
 # Plot it
 plotRGB( Najaf2003, r=1, g=2, b=3)
@@ -609,12 +611,10 @@ plotRGB( Najaf2023, r=1, g=2, b=3)
 
 dev.off()
 
-##################### Multitemporal change detection
+### Multitemporal change detection ####
 Najaf_time<-Najaf2003[[1]]-Najaf2023[[1]]
 cl<-colorRampPalette(c("brown", "grey", "orange")) (100)
-plot(Najaf_time,col=cl)
-
-##################Importing my own image
+plot(Naja# Importing my own image
 snow<-rast("rockiesfirstsnow_tmo_2023288_lrg.jpg")
 plotRGB(snow,1,2,3)
 plotRGB(snow,2,1,3)
@@ -628,14 +628,14 @@ plot(lakepowell_time,col=cl)
 
 install.packages("ncdf4")
 
-# ----------------------
+# ---------------------- #
 
-# 08 Copernicus data
+# 08 Copernicus data ####
 
 library (ncdf4) # read Copernicus data with nc extension 
 library(terra)
 
-setwd("/Users/anita/Desktop/Unibo/Courses/1st YEAR/1st SEMESTER/Spatial Ecology in R") #set working directory with the path R needs to find the document
+setwd("/Users/anita/Desktop/Unibo/Courses from Global Change Ecology/Spatial Ecology in R") # set working directory with the path R needs to find the document
 
 soilm2023<-rast("c_gls_SSM1km_202311220000_CEURO_S1CSAR_V1.2.1.nc")
 soilm2023
@@ -649,7 +649,7 @@ plot(soilm2023[[1]])
 cl<-colorRampPalette(c("red", "orange", "yellow"))(100)
 plot(soilm2023[[1]], col=cl)
 
-ext<-c(22,26,55,57) #min&max longitude (x), min&max latitude (y)
+ext<-c(22,26,55,57) #m in&max longitude (x), min&max latitude (y)
 # we use this extent to crop another image
 soilm2023crop<-crop(soilm2023,ext)
 # let's see it
@@ -660,42 +660,29 @@ ext1<-c(10,24,60,75)
 soilm2023crop1<-crop(soilm2023,ext1)
 plot(soilm2023crop1[[1]], col=cl) 
 
+# ---------------------- #
 
-# ANOTHER IMAGE
-setwd("/Users/anita/Desktop/Unibo/Courses/1st YEAR/1st SEMESTER/Spatial Ecology in R")
-soilm2023_25<-rast("c_gls_SSM1km_202311250000_CEURO_S1CSAR_V1.2.1.nc")
-soilm2023_25crop<-crop(soilm2023_25,ext1)
-plot(soilm2023_25crop[[1]], col=cl) 
+# 09 Classification ####
 
-# ----------------------
-
-# 09 Classification
-
-# Estimate the qualitative and quantitative difference between two images taken at different times
-# We need to transform images in classes (land cover, land use, etc.)
-
-# Satellite image of the Alps: green snow, blue pastures, green forests, pink villages
+# Estimate qualitative and quantitative differences between images taken at different times
+# Images must be transformed into classes (land cover, land use, etc.), for example, in a satellite image of the Alps, classes could be green snow, blue pastures, green forests, pink villages
 # We can compare quantitative (points in the graph) and qualitative (images RGB) data, by taking a picture in the image and analyze the waves it reflects
-# Thay we try to guess the element according to the reflectance: water for example reflects NIR and red
+# Then we try to guess the element the classes represent according to the reflectance: water for example reflects NIR and red
 
-# Pixels = training sites, expressing the main classes or clusters. They're set of individual objects having the same features. In this case the main classes are agricutural areas, forests, etc.
+# Pixels = set of individual objects having the same features when they belong to the same class.
 
-# How to classify pixels? From : we can estimate if the pixel represents an urban area or a forest using the the minimum distance from the class we think it belongs
-
-# CLASSIFYING SATELLITE IMAGES AND ESTIMATING THE AMOUNT OF CHANGE
+## Classification of satellite images and quantitative estimate of change in time 
 library(terra)
 library(imageRy)
 im.list()
-#S un pillars are sun regions with high energy
-
+# We take the "Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg", representing Sun pillars (sun regions at high energy)
 # https://www.esa.int/Science_Exploration/Space_Science/Solar_Orbiter/Solar_Orbiter_s_first_views_of_the_Sun_image_gallery
 
 sun<-im.import("Solar_Orbiter_s_first_views_of_the_Sun_pillars.jpg")
-# instant RGB picture, with 3 levels of energy: yellow (higher), brown, black. So, we expect 3 cluters.
-# We have to explain to the softer the numbers of the cluster
+plotRGB(sun)
 
-sunc<- im.classify(sun, num_clusters = 3)
-# We should reach similar images, but not the same. The random set of pixel makes every plot different in colors but not in shape.
+# instant RGB picture, where we can visually recognize 3 levels of energy: yellow (higher), brown, black. So, we give the prompt to create 3 cluters.
+sunc<- im.classify(sun, num_clusters = 3) # The random set of pixel makes every plot different in colors but not in shape.
 
 # We want to measure the amount of error
 
@@ -703,18 +690,18 @@ m1992<- im.import("matogrosso_l5_1992219_lrg.jpg")
 m2006<- im.import("matogrosso_ast_2006209_lrg.jpg")
 plotRGB(m1992)
 
-m1992c<-im.classify(m1992, num_clusters=2) # amount of classes that we want to see in the image
-plot(m1992c) # 3 replicate of the same image: white class of forest, green human intervention
+m1992c<-im.classify(m1992, num_clusters=2) # we classify the image in 2 classes
+plot(m1992c) # 3 replicate of the same image: white class of forest and green human intervention
 
 # Classes: forest = 1, human = 2
 m2006c<-im.classify(m2006, num_clusters=2)
 plot(m2006c)
 
 par(mfrow=c(1,2))
-plot(m1992c[[1]]) # DOUBLE PARENTHESIS to plot choose only the first image
+plot(m1992c[[1]]) # DOUBLE PARENTHESIS to plot  only the first image
 plot(m2006c[[1]])
 
-# What is the proportion of forest and human classes? function: freq() (calculates the pixels from a certain classes)
+## What is the proportion of forest and human classes in the picture (i.e. the amount of pixel belonging to a class)? - freq() ####
 f1992<-freq(m1992c[[1]])
 
 # Total number of pixels? function: ncell()
@@ -723,19 +710,15 @@ tot1992
 
 # Percentage? 
 p1992<-f1992*100/tot1992
-p1992
-
-# forest = 83%, human = 17%
+p1992 # forest = 83%, human = 17%
 
 # Percentage of 2006
 f2006<-freq(m2006c[[1]])
 tot2006<-ncell(m2006c)
 p2006<-f2006*100/tot2006
-p2006
+p2006 # forest = 45%, human = 55%
 
-# forest = 45%, human = 55%
-
-# Building the final table, which means a graph with all this data -> function: data
+# Building the final table, which means a graph with all this data - data()
 # We need to build the columns
 class<- c("forest", "human")
 y1992<- c(83, 17) # forest and humans in 1992
@@ -751,22 +734,20 @@ library(patchwork) # allows to put several graphs together
 
 p1<- ggplot(tabout, aes(x=class, y=y1992, color=class)) + geom_bar(stat="identity", fill="white")
 p2<- ggplot(tabout, aes(x=class, y=y2006, color=class)) + geom_bar(stat="identity", fill="white")
-# bar plot with the tabout class, aestethics will be the class
 
+# bar plot with the tabout class, aestethics will be the class
 p1+p2
 
-# ----------------------
+# ---------------------- #
 
-# 10 Variability
+# 10 Variability ####
 
-# Measurement of R based variability
-# there are different indices in statistics: the most simple thing in our case was to measure the standard deviation, that is how much the different data are divergin from the mean
-# we measured it with the focal() function
+# Measurement of Reflectance-based variability (analisi dei valori di riflettanza): there are different indices in statistics
+# the most simple thing in our case was to measure the standard deviation, that is how much the different data are diverging from the mean - focal() 
 
 library (imageRy)
 library(terra)
 library(viridis)
-
 im.list()
 
 sent <- im.import("sentinel.png") # Similaun Glacier
@@ -775,24 +756,27 @@ sent <- im.import("sentinel.png") # Similaun Glacier
 # band 2 = red
 # band 3 = green
 
-im.plotRGB(sent, r = 1, g = 2, b = 3)
-
-# snow in white, lake in black
-
+im.plotRGB(sent, r = 1, g = 2, b = 3) # snow in white, lake in black
 im.plotRGB(sent, r = 2, g = 1, b = 3)
 
 nir <- sent[[1]]
-plot(nir) # 8 bit image as it distributed in a range between 0 and 250
+plot(nir) # 8-bit image as it distributed in a range between 0 and 250
 
-# MOVING WINDOW APPROACH FOR DIVERSITY ASSESSMENT
+## Diversity assessment: moving window approach ####
+# We'll be using two complementary approaches to assess spatial variability in the Sentinel images, and then comparing their results
+# PCA: Combines information from multiple spectral bands
+# Moving window approach: Measures variability within a local neighbourhood
 # we are going to calculate the standard deviation (sd) of windows of pixels, one at the time
 # in the end we would have passed the window in the whole image, calculating each time the sd value of the central pixel of the window 
+# Spectral heterogeneity can be an indicator or proxy for habitat heterogeneity, but it does not directly measure species richness
+# For example, a heterogeneous landscape might contain several vegetation types, but that doesn't necessarily mean it supports more species
 
-# calculate the standard deviation with the function: focal()
+# calculate the standard deviation - focal()
 
-sd3 <- focal(nir, matrix(1/9,3,3), fun=sd) # avoid givid the name sd without numbers cause it can be confused with the value of the standard deviation
+sd3 <- focal(nir, matrix(1/9,3,3), fun=sd) # avoid giving the name sd without numbers cause it can be confused with the value of the standard deviation
 
-# use of the nir band, matrix describes the dimension of the moving window. it is composed by 9 pixels, so they go from 1 to 9 (written as 1/9). In general we use squared matrices. The function calculated is the standard deviation (sd).
+# we use the nir band and a matrix that describes the dimension of the moving window
+# it is composed by 9 pixels, so they go from 1 to 9 (written as 1/9). In general we use squared matrices. The function calculated is the standard deviation (sd).
 
 plot(sd3)
 
@@ -802,9 +786,7 @@ plot(sd3, col=cl) # northwest part is the area where the variability is higher
 
 # let's calculate the variability in a 7x7 moving window
 sd7 <- focal(nir, matrix(1/49,7,7), fun=sd)
-plot(sd7, col=cl) 
-# sd in a smaller window will give a local calculation and see subtile differences
-# with larger windows, the resulting picture will include additional pixels, so it will be less precise
+plot(sd7, col=cl) # sd in a smaller window will give a local calculation and see subtile differences, while with larger windows, the resulting picture will include additional pixels, so it will be less precise
 
 par(mfrow=c(1,2))
 plot(sd3, col=cl)
@@ -815,14 +797,14 @@ par(mfrow=c(1,2))
 im.plotRGB(sent, r = 2, g = 1, b = 3)
 plot(sd7, col=cl) # the line on the top left reflects a lot of variability; it can be due to snow or a clowd better recognized in the nir picture. Other times it can be due to geological or botanical variability
 
-# ----------------------
+# ---------------------- #
 
-# 11 Principal Component Analysis
-
+# 11 Principal Component Analysis ####
+install.packages("imageRy")
+install.packages("terra")
 library (imageRy)
 library(terra)
 library(viridis)
-
 im.list()
 dev.off()
 
@@ -831,21 +813,17 @@ sent <- im.import("sentinel.png") #Similaun Glacier
 pairs(sent)
 viridisc <- colorRampPalette(viridis(7))(255)
 
-# Pearson correlation index goes from -1 to +1. We see that there's perfect correlation between the visible bands, wile the NIR adds more info so there's no correlation with the others. 
+# Pearson correlation index (r) goes from -1 to +1. It measures the strength and direction of a linear relationship between two continuous variables. We see that there's perfect correlation between the visible bands, while the NIR adds more info so there's no correlation with the others. 
 
 
-# MULTIVARIATE ANALYSIS
-# Measurement of R based variability with a single layer, which is chosen objectivle with Multivariate Analysis
-# compact the 3 bands of sentinel into one to better visualize it
+## Multivariate Analysis ####
+# Measurement of Reflectance-based variability by combining the three Sentinel-2 bands into a single layer, allowing for a more comprehensive visualization of spectral variability.
 
 # we have already seen the DCA (detrended component analysis)
 # now we will see the PCA (principal component analysis)
 # the last row is nothing
 
-sentpc <- im.pca2(sent)
-
-
-# it says that the principal component will show the 71% of the variability, the second 53% etc.
+sentpc <- im.pca(sent) # it says that the principal component will show the 71% of the variability, the second 53% etc.
 
 pc1 <- sentpc$PC1 # we choose only the first principal component
 plot(pc1, col=viridisc)
@@ -854,21 +832,18 @@ plot(pc1, col=viridisc)
 pc1sd3 <- focal(pc1, matrix(1/9,3,3), fun=sd)
 plot(pc1sd3, col=viridisc)
 
-
 # calculating sd onto of pc1 in a 7x7 matrix
 pc1sd7 <- focal(pc1, matrix(1/49,7,7), fun=sd)
 plot(pc1sd7, col=viridisc)
 
-
-
 # multiframe
-
 sd3 <- focal(nir, matrix(1/9,3,3), fun=sd)
 sd7 <- focal(nir, matrix(1/49,7,7), fun=sd)
 
 par(mfrow=c(3,3))
 im.plotRGB(sent, 2,1,3)
-# sd from the variability script:
+
+# sd from the variability script
 plot(sd3, col=viridisc)
 plot(sd7, col=viridisc)
 plot(pc1, col=viridisc)
@@ -881,12 +856,7 @@ sdstack <- c(sd3, sd7, pc1sd3, pc1sd7)
 plot(sdstack, colr = viridisc)
 
 # change the names
-
 names(sdstack) <- c("sd3", "sd7", "pc1sd3", "pc1sd7")
 plot(sdstack, col = viridisc)
 
 # focal can also be used for other statistics: mean, coefficent variation etc.
-
-
-# ----------------------
-
