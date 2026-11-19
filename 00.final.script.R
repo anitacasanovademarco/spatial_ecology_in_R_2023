@@ -1,9 +1,9 @@
-# Final script including all the different scripts during lectures
+# Spatial Ecology in R: course script ####
 
-# ----------------------
+# ---------------------- #
 
 # Summary:
-# 01 Beginning
+# 01 Introduction
 # 02.1 Population densities
 # 02.2 Population distribution
 # 03.1 Community multivariate analysis
@@ -15,37 +15,57 @@
 # 08. Copernicus data
 # 09. Classification
 # 10. Variability
-# 11. Principal Component Analysis
+# 11. Principal Component Analysis (PCA)
+
+install.packages("sdm")
+install.packages("terra")
+install.packages("sf")
+install.packages("ggplot2")
+
+library(terra)
+library(sdm)
+library(sf)
+library(ggplot2)
+?terra
+?sdm
+?sf
+?ggplot2
 
 
-# ----------------------
+# ---------------------- #
 
-# 01 Beginning
+# 01 Introduction ####
 # Here I can write anything I want
 
-# R as works as calculator
+# R works as calculator
 3+4
 
-# Make an assignment to create a variable
+# Makes assignment to create variables
 zima <- 2 + 3
 
 duccio <- 5 + 3
 
-# Perform calculations with the recently created variables
+# Performs calculations with the recently-created variables
 zima * duccio
 final <- zima * duccio
 
+## Data structures ####
+# You can create differen types of variables: 
+# Vectors (unidimensional)
+# Matrices (bidimensional)
+# Arrays (multidimensional) 
 
-##### Data structures: vectors (unidimensional) < matrices (bidimensional) < arrays (multidimensional)
-# Vectors: remember to use paranthesis!
+## Assignments #### 
+# Don't fortget to use paranthesys with vectors!
 sophi <- c(10,20,30,50,70) # microplastics
-paula <- c(100, 500, 600, 1000, 2000) #people
+paula <- c(100, 500, 600, 1000, 2000) # people
 
 # assign them to new updated variables
 people <- paula
 microplastics <- sophi
 
-# plot them together
+## Plots ####
+# plot them together in a x-y graph with the plot() function
 plot(people, microplastics, xlab="number of people", ylab="microplastics") 
 
 # use new symbols, colors and dimension
@@ -53,62 +73,56 @@ plot (people, microplastics, pch=19, cex=2, col="blue") # pch changes the symbol
 
 # find the symbols in this site: http://www.sthda.com/english/wiki/r-plot-pch-symbols-the-different-point-shapes-available-in-r
 
-# ----------------------
+# ---------------------- #
 
-# 02.1 Population densities
+# 02.1 Population densities ####
 # Let's install spatstat, which allows us to make a SPATIAL POINT PATTERN ANALISYS
 
 install.packages("spatstat") # QUOTES are needed to protect the package we want to install which is outside R
 
 # the function library(spatstat) is used to check if the package has already been installed and to open it at every R session
-# quotes are not needed as the package has already been installed from outside R
 
-library(spatstat)
+library(spatstat) # quotes are not needed as the package has already been installed from outside R
+?spatstat
 
-# we are using data in GitHub, which is  outside R, in order to previously understand how they work
+# during the course we wrote the code in GitHub, which is  outside R, in order to previously understand how they work and don't accidentally overwrite some variables
 
-# DATA DESCRIPTION
+### Species datasets ####
 # Let's use some datasets provided by spatstat, like BEI DATA 
-#(The dataset bei gives the positions of 3605 trees of the species Beilschmiedia pendula (Lauraceae) 
-# in a 1000 by 500 metre rectangular sampling region in the tropical rainforest of Barro Colorado Island)
+#(The dataset bei gives the positions of 3605 trees of the species Beilschmiedia pendula (Lauraceae) in a 1000 x 500 m rectangular sampling region in the tropical rainforest of Barro (Colorado Island)
 
-# PLOTTING  DATA FROM SPATSTAT (see what it represents)
-plot(bei) 
-# as the points are too big for this area, we'll change their shape
+plot(bei) # as the points are too big for this area, we'll change their shape
 
-# CHANGING DATA DIMENSION - cex
-plot(bei,cex=.5)
+## Changing data dimension - cex ####
+plot(bei,cex=.5) # why are the trees clumbed in some areas?
 
-# why are the trees clumbed in some area?
-
-# CHANGING THE SYMBOL  - pch
+## Changing the symbols  - pch ####
 plot(bei,cex=.2,pch=19) #search the number of R symbols on the internet
 
-# ADDITIONAL DATASETS
-bei.extra # it has two variables: elevation (elev) and gradient (grad). 
-# They allow us to understand the distribution of bei datas
+### Additional landscape datasets ####
+bei.extra # it has two variables: elevation (elev) and gradient (grad) which allow us to understand the distribution of bei data
 
-plot(bei.extra) #here we have the raster file =! vector file
+plot(bei.extra) # here we have the raster file =! vector file
 
-# Let's use only part of the dataset: elev
+# Let's use only part of the dataset: $elev
 bei.extra$elev  #$ sign links elevation to the dataset
 plot(bei.extra$elev) 
-elevation <- plot(bei.extra$elev)  #elevation has been assignet to an homonimous object, simple to find
+elevation <- plot(bei.extra$elev)  # elevation has been assigned to an homonymous object, simple to find
 
 # second method to select elements
 bei.extra[1] # take the fist element, so it's another way to isolate elevation
-elevation2 <- bei.extra[[1]]
-plot(elevation2)
+elev <- bei.extra[[1]]
+plot(elev)
 
-# INTERPOLATION: infer values within the range covered by the data
-# tt is possible by passing from points to a continuous surface called DENSITY MAP
-densitymap <- density(bei) # the densitymap gives us info about the distribution of pixel
+### Interpolation: infer (estimate) unknown values within the range covered by the existing data ####
+# it is possible by passing from points to a continuous surface called DENSITY MAP
+densitymap <- density(bei) # the density map gives us info about the distribution of pixel
 plot(densitymap)
 
 # let's overlap  bei points to the densitymap
 points(bei, cex=.2)
 
-######## IMPORTANT: avoid pictures with a combination of blue, green and red colors as daltonic people can't see them
+######## IMPORTANT: avoid pictures with a combination of blue, green and red colors as dalthonic people can't see them
 
 # let's change the colors
 # find new colors in the site: http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf
@@ -137,15 +151,17 @@ par(mfrow=c(2,1)) #2 rows and 1 column, and they're part of an array
 plot(densitymap)
 plot(elev)
 
-# ----------------------
+dev.off() # after every par(mfrow) prompt to close it
 
-# 02.2 Population distribution
+# ---------------------- #
+
+# 02.2 Population distribution ####
 # why populations disperse in a certain manner over the landscape?
 
 # Sdm and rgdal packages required
 
 install.packages("sdm")
-install.packages("rgdal", dependencies=T) #W arning Message: rgdal will be retired cause it'll be included in terra package
+install.packages("rgdal", dependencies=T) #Warning Message: rgdal will be retired cause it'll be included in terra package
 
 # open the packages
 
@@ -157,17 +173,16 @@ library(rgdal) # translator library for raster and vector geospatial data format
 
 file <- system.file("external/species.shp", package="sdm") # sdm have vector files and images
 
-###### let's import a VECTOR, which is a coordinate system, with the function: vect()
+# let's import a VECTOR, which is a coordinate system, with the function: vect()
 species <- vect(file) 
 
 # to see Occurrence just link the vector to Occurrence with the $
-species$Occurrence # PRESENCE-ABSENCE DATA: the presence is objective, the absence could be due to a sampling bias
-# in this case, for study purpuses, let's take each 0 like a real 0
+species$Occurrence # PRESENCE-ABSENCE DATA: the presence is objective, the absence could be due to a sampling bias; it represents the sampling locations where the species haven't been found
+# in this case, for study purposes, let's take each 0 like a real 0
 
 plot(species)
 
 # select only presences or absences
-
 pres <- species[species$Occurrence==1,]  # we write 1 cause we need the 1 value, which is the presence
 species[species$Occurrence==1,]
 plot(pres)
@@ -192,12 +207,12 @@ plot(abs, col="light blue")
 plot(pres, col="dark blue")
 points(abse, col="light blue")
 
-###### let's import an IMAGE with the function: rast()
+### Importing raster files (images) - rast() ####
 # Elevation predictor
-elev <- system.file("external/elevation.asc", package="sdm") #asc is an extention of sdm and it's a type of file, like png 
+elev <- system.file("external/elevation.asc", package="sdm") # asc is an extention of sdm and it's a type of file, like png 
 elevmap <- rast(elev) 
 plot(elevmap)
-points(pres,cex=0.5) #we see that the specie, which is in this case, Rana temporaria, is avoiding a valley. More, it's not choosing very low and very high elevations
+points(pres,cex=0.5) # we see that the species, which is in this case, Rana temporaria, is avoiding a valley and very low or very high elevations
 
 # Temperature predictor
 temp <- system.file("external/temperature.asc", package="sdm") 
@@ -208,8 +223,10 @@ points(pres,cex=0.5)
 # Vegetational cover
 veg <- system.file("external/vegetation.asc", package="sdm") 
 vegmap <-rast(veg) 
-plot(vegmap)
-points(pres,cex=0.5)
+plot(vegmap, main = "Vegetation cover and species distribution") # with title
+points(pres, cex=0.5, col="darkgreen")
+
+?points
 
 # Precipitation predictor
 prec <- system.file("external/precipitation.asc", package="sdm") 
@@ -236,9 +253,9 @@ points(pres,cex=0.5)
 plot(precmap)
 points(pres,cex=0.5)
 
-# ----------------------
+# ---------------------- #
 
-# 03.1 Community multivariate analysis
+# 03.1 Community multivariate analysis #####
 # In communities, species are overlapping in space and time: let's analyse them separated to better understand them
 
 # Multivariate analysis of species overlap in SPACE:
@@ -247,8 +264,8 @@ points(pres,cex=0.5)
 install.packages("vegan")
 library(vegan)
 data(dune) 
-# Dune is a data frame of observations of 30 species at 20 sites. 
-# The species names are abbreviated to 4+4 letters.
+# Dune is a data frame of observations of 30 species at 20 sites
+# The species names are abbreviated to 4+4 letters (Genus species)
 
 dune # to see the dataset
 # or
@@ -256,8 +273,8 @@ head(dune) # just the first 6 rows
 tail(dune) # just the last 6 rows
 # we see a matrix of amout of individuals present in every plot
 
-ord <- decorana(dune) # decorana function from the package vegan gives the Detrended Correspondace Analysis
-# DCA is a multivariate statistical technique used by ecologists to find the main factor or gradient in species-rich but sparse data matrices that tipify ecological community data
+ord <- decorana(dune) # decorana() function from the package vegan gives the Detrended Correspondace Analysis
+# DCA is a multivariate statistical technique used by ecologists to find the main factor or gradient in species-rich but sparse data matrices that tipify (are tipic) ecological community data
 
 # set the length of the new axes
 
@@ -277,15 +294,15 @@ pldc2
 pldc3
 pldc4
 
-# as pldc1 + pldc2 represent the 70% of the total, we can also keep them only
+# as pldc1 + pldc2 together represent the 70% of the total, we can also keep just them
 
 plot(ord) 
-# names represent species (we see coupling species), numbers represent plots: everything is depicted in a new dimention made by dca1 and 2
+# names represent species (we see coupling species), numbers represent plots: everything is depicted in a new dimension made by dca1 and 2
 # from the distribution we can hypothesize the environmental parameters affecting the species distribution
 
-# ----------------------
+# ---------------------- #
 
-# 03.2 Community overlap
+# 03.2 Community overlap #####
 # Multivariate analysis of species overlap in TIME:
 
 install.packages("overlap")
@@ -300,7 +317,7 @@ summary(kerinci)
 tiger <- kerinci[kerinci$Sps=="tiger",] # Sps=species
 
 # select its time
-timetig <- kerinci$Time*2*pi # time in radiants: multiply the linear time to 2 pi greek 
+timetig <- kerinci$Time*2*pi # time in radiants: multiply the linear time to 2 pi greek to see the Activity Pattern during the day
 
 # plot it
 densityPlot(timetig, rug=TRUE)
@@ -317,24 +334,26 @@ densityPlot(timemac, rug=TRUE)
 #overlap the tiger's time
 overlapPlot(timetig,timemac)
 
-# ----------------------
+# ---------------------- #
 
-# 04. Remote sensing data visualisation
-# Where to store additional packages, not present in R? 
+# 04. Remote sensing data visualization ####
+#### Where to store additional packages, not present in R? ####
 
-# packages can be stored in GitHub (not connected to R: it's not controlled) or CRAN (directly conencted to R: it's controlled)
+# packages can be stored in GitHub (not connected to R: it's not controlled) or CRAN (more direct, it's conencted to R, but so it's also controlled)
 
 # to install them from CRAN (Coomprehensive R Archive Network), the function is: install.packages()
 install.packages("devtools") # devtools package allows to download packages outside CRAN
 
 # to open the packages, the function is always: library()
-library (devtools) 
+library(devtools) 
+install.packages("imageRy")
 
 # to install them from GitHub, the function is: install_github()
 install_github("ducciorocchini/imageRy")  
 library (imageRy)
 
 # to see all the possible images from the imageRy package, the function is: im.list()
+im.list()
 
 # to import one image, the function is: im.import()
 b2 <- im.import("sentinel.dolomites.b2.tif")
@@ -346,20 +365,10 @@ b2 <- im.import("sentinel.dolomites.b2.tif")
 clb <- colorRampPalette(c("dark grey", "grey", "light grey")) (100)
 plot(b2,col=clb)
 
-c1 <- colorRampPalette(c("black", "grey", "white")) (100)
-c2 <- colorRampPalette(c("purple", "pink", "white")) (100)
-c3 <- colorRampPalette(c("dark green", "light green", "white")) (100)
-c4 <- colorRampPalette(c("blue", "light blue", "white")) (100)
-
-par(mfrow=c(2,2))
-plot(b2,col=c1)
-plot(b3,col=c2)
-plot(b4,col=c3)
-plot(b8, col=c4) 
-
-###### STACK IMAGES
+#### Stack images ####
 # they're a function that plots all the selected images together, one over the other (in this case, four bands all together)
 # RGB SPACE = Red, Green and Blue components that build other colours by overlapping
+
 # BLUE
 b2 <- im.import("sentinel.dolomites.b2.tif") 
 
@@ -372,6 +381,19 @@ b4 <- im.import("sentinel.dolomites.b4.tif")
 # NIR
 b8 <- im.import("sentinel.dolomites.b8.tif") 
 
+# we create palettes for plotting the different color components
+c1 <- colorRampPalette(c("black", "grey", "white")) (100)
+c2 <- colorRampPalette(c("purple", "pink", "white")) (100)
+c3 <- colorRampPalette(c("dark green", "light green", "white")) (100)
+c4 <- colorRampPalette(c("blue", "light blue", "white")) (100)
+
+par(mfrow=c(2,2))
+plot(b2,col=c1)
+plot(b3,col=c2)
+plot(b4,col=c3)
+plot(b8, col=c4) # the NIR band stores more details
+dev.off()
+
 stack_sent <- c(b2,b3,b4,b8)
 
 im.plotRGB(stack_sent, r = 3, g = 2, b = 1) # our view
@@ -382,12 +404,18 @@ im.plotRGB(stack_sent, 4, 3, 2) # with infrared: vegetation becomes red, we get 
 im.plotRGB(stack_sent, r=3, g=4, b=2)
 im.plotRGB(stack_sent, r=3, g=2, b=4)
 
-# correlation between the bands
+### Correlation between the bands ####
 pairs(stack_sent)
+# Interpretazione: 
+# Diagonale: mostra gli istogrammi delle singole bande, cioè la distribuzione dei valori dei pixel per ciascuna banda
+# Triangolo rettangolo inferiore: mostra gli scatterplot (grafici di dispersione9), dove ogni punto rappresenta un pixel e le sue due misurazioni
+# Triangolo rettangolo superiore: mostra i coefficienti di correlazione tra le bande. Il coefficiente di correlazione oscilla tra -1 (nessun informazione condivisa tra i due parametri misurati) e +1 (tutte le informazioni condivise tra i due parametri)
 
-# ----------------------
+# In tutti e 3 i casi si può osservare che la banda a NIR possiede più informazioni: l'istogramma ha una distribuzione normale, lo scatterplot ha più punti e il coefficiente di correlazione è minore perche rispetto alle altre bande condivide meno informazioni) 
 
-# 05. Spectral indices
+# ---------------------- #
+
+# 05. Spectral indexes ####
 # Vegetation Cover Change between 1992 and 2006 
 
 install.packages("ggplot2")
@@ -397,50 +425,52 @@ library(ggplot2)
 library(viridis)
 library(terra)
 library(imageRy)
-im.list()
+im.list() # to see the raster files present in imageRy
 
 m1992<- im.import("matogrosso_l5_1992219_lrg.jpg") # image from satellite LANDSAT (1962)
 # it's a processed image, where bands 1=NIR, 2=RED, 3=GREEN
 im.plotRGB(m1992, r=1, g=2, b=3) 
-# in this way, the NIR bands will be depicted in red: they're typical of an healthy vegetation
+# in this way, the NIR bands will be depicted in red: healthy vegetation usually has higher NIR bands
 # the RED ones will be represented in green: they're typical of unhealthy or absent vegetation
 # and the GREEN one will be painted in blue
-im.plotRGB(m1992, r=2, g=1, b=3)
-im.plotRGB(m1992, r=2, g=3, b=1)
-
-m2006<-im.import("matogrosso_ast_2006209_lrg.jpg")
-im.plotRGB(m2006,r=2, g=3, b=1)
+im.plotRGB(m1992, r=2, g=1, b=3) # this is the clearest representation
+im.plotRGB(m1992, r=2, g=3, b=1) # try another combination just for fun
 
 # import the 2006 image
-m2006 <- im.import("matogrosso_ast_2006209_lrg") # another processed image, where bands 1=NIR, 2=RED, 3=GREEN
-im.plotRGB(m2006, r=2, g=3, b=1)
-im.plotRGB(m2006, r=2, g=1, b=3) #we see the result of deforestation
+m2006<-im.import("matogrosso_ast_2006209_lrg.jpg")
+im.plotRGB(m2006,r=2, g=1, b=3)  # we see the result of deforestation after 14 years
 
-#build a multiframe with 1992 and 2006 images
+# build a multiframe with 1992 and 2006 images
 
 par(mfrow = c(1, 2)) 
 im.plotRGB(m1992, r=2, g=3, b=1)
 im.plotRGB(m2006, r=2, g=3, b=1)
 dev.off()
 
-plot(m1992[[1]])
-# In this picture, the range of reflectance goes from 0 to 255 (pink-green colors)
-# Reflectance is the ratio between reflected and incident radiant flux 
+plot(m1992[[1]]) # just NIR
+# In this picture, the range of digital numbers goes from 0 to 255 (pink-green colors).
+# Colours are described as follows:
+# rgb(0, 0, 0) contains no red, no green and no blue, resulting in pure black
+# rgb(255,0,0) is pure red, rgb(0,255,0) is pure green and rgb(0,0,255) is pure blue
+# rgb(255, 255, 255) is full red, full green and full blue, resulting in pure white
+# equal amounts of each of the primary colors result in shades of grey: rgb(64,64,64), rgb(128,128,128), rgb(192,192,192)
 # One bit of info can be 0 or 1 (BINARY CODE)
 # The formula to calculate the amount of information every bit gives is:
 # 2 raise to the power of n, where n is the number of bits.
-# Ex: 4 bits will have 16 bits of information. 
-# In this picture we have up to 8 bits, hence, up to 255 bits of reflectance (2 raised to power 8).
+# Ex: 4-bits resolution will have 16 bits of information. 
+# In this image, we have an 8-bit radiometric resolution, meaning that each pixel can store up to 256 different reflectance values (2⁸), ranging from 0 to 255.
 
+# Reflectance describes the fraction of incoming solar radiation reflected by a surface. It is generally expressed as a value between 0 and 1 (or 0–100%).
+# Color bands represent the different waves of sunlight reflected from the earth surface
 # The difference between the two bands give us the DVI.
 # DVI = NIR - RED, where bands: 1=NIR, 2=RED, 3=GREEN
-dvi1992 = m1992 [[1]] - m1992 [[2]] #dvi of 1992 is the difference between band 1 and 2
+dvi1992 = m1992 [[1]] - m1992 [[2]] # dvi of 1992 is the difference between band 1 and 2
 plot(dvi1992)
 
 # now changing the palette
 cl <- colorRampPalette (c("dark blue", "yellow", "red", "black"))(100)
 plot(dvi1992, col=cl)
-#everything that's dark red is healthy, yellow and blue is bad from the vegetation point of view as it represents bare soil.
+# everything that's dark red is healthy, yellow and blue is bad from the vegetation point of view as it represents bare soil.
 
 # exercise DVI of 2006
 dvi2006 = m2006[[1]] - m2006[[2]]
@@ -448,14 +478,16 @@ plot(dvi2006)
 cl <- colorRampPalette (c("dark blue", "yellow", "red", "black"))(100)
 plot(dvi2006, col=cl) #plotting the DVI of 2006 with the same coloring palette.
 
-# NDVI = NIR - RED/ NIR + RED
+### NDVI = NIR - RED/ NIR + RED ####
+# Normalized difference vegetation index (NDVI) is a widely used metric for quantifying the health and density of vegetation using sensor data. It is calculated from spectrometric data at two specific bands: red and near-infrared.
+# The metric is popular in industry because of its accuracy. It has a high correlation with the true state of vegetation on the ground. The index is easy to interpret: NDVI will be a value between -1 and 1, where values close to zero will indicate little to no vegetation, negative values are associated with non-land surfaces or water, and higher values correspond to healthy, dense vegetation. The spectrometric data is usually sourced from remote sensors, such as satellites.
 
 ndvi1992 = ( m1992 [[1]] - m1992 [[2]] )/ (m1992[[1]] + m1992[[2]])
-#also
+# also
 ndvi1992 =  dvi1992/ (m1992[[1]] + m1992[[2]])
 plot(ndvi1992, col=cl)
 
-#NDVI for 2006
+# NDVI for 2006
 
 ndvi2006 = ( m2006 [[1]] - m2006 [[2]] )/ (m2006[[1]] + m2006[[2]])
 ndvi2006 =  dvi2006/ (m2006[[1]] + m2006[[2]])
@@ -472,18 +504,18 @@ plot(ndvi2006, col=cl)
 ndvi2006a <- im.ndvi (m2006, 1, 2) 
 plot(ndvi2006a, col=cl) 
 
-# ----------------------
+# ---------------------- #
 
-# 06. Time series
+# 06. Time series ####
 
 # TIME SERIES are series of data (images) scattered in time 
 library(terra)
 library(imageRy)
 im.list()
 
-#### CHANGES IN NITROGEN CONCENTRATION due to COVID, from January to March 2020
-EN01<-im.import("EN_01.png") #European Nitrogen in January
-EN13<-im.import("EN_13.png") #European Nitrogen in March
+## CHANGES IN NITROGEN CONCENTRATION due to COVID, from January to March 2020
+EN01<-im.import("EN_01.png") # European Nitrogen in January
+EN13<-im.import("EN_13.png") # European Nitrogen in March
 EN01
 EN13
 
@@ -496,20 +528,14 @@ dev.off()
 diff=EN01[[1]]-EN13[[1]]
 plot(diff)
 
-# Reminder: blue and red or green and red aren't good for daltonic people
-# So, let's change the colors
-
 cl <- colorRampPalette(c('red','orange','yellow'))(100)  
 plot(diff,col=cl) 
-# red is higher in march, yellow is higher in january
-# so we have a huge decrease in march (there's more yellow than red)
-# we see that in many cities people stopped to use cars
+# red is higher in march (negative difference), yellow is higher in january (positive difference)
+# so we have a huge decrease in march (there's much more yellow than red) because in many cities people stopped to use cars so the pollution was higher before the covid than after
 
-##### CHANGES IN TEMPERATURE of Greenland ice sheet
-
-dev.off()
+## CHANGES IN TEMPERATURE of Greenland ice sheet ####
 im.list()
-G2000<-im.import("greenland.2000.tif") #16 bits image
+G2000<-im.import("greenland.2000.tif") # 16 bits image because it has 4 colors (R, G, B, NIR)
 plot(G2000,col=cl) #temperature on the surface of the land
 # red=almost perennial ice cap
 
@@ -532,9 +558,8 @@ plot(G2010,col=cl1)
 plot(G2015,col=cl1)
 
 # it's the same as
-
 dev.off()
-stackG4<-c(G2000,G2005,G2010,G2015) #around 2005 there was the worst period
+stackG4<-c(G2000,G2005,G2010,G2015) # around 2005 there was the worst period
 plot(stackG4, col=cl1)
 # we see that the surface temperature in Greenland have increased and then decreased back, while that in the Nunavut has gradually increased
 # also Island's temperature has decreased a little bit
@@ -549,9 +574,9 @@ diffg<-stackG4[[1]]-stackG4[[4]]
 # it's the same as
 difg<-G2000-G2015
 plot(diffg, col=cl1) 
-# blue=temperature was lower in the past 
+# blue = temperature was lower in the past 
 # so there's a lot of increase in temperatures, therefore so decrease in ice sheet
-# red= temperature was higher in the past
+# red = temperature was higher in the past
 
 # Make a RGB plot using different years
 dev.off()
@@ -560,11 +585,9 @@ im.plotRGB(stackG4, r=1,g=2,b=3)
 # green = temperature similar to the past
 # blue = temperature was higher in the past (central part)
 
-# ----------------------
+# ---------------------- #
 
-# 07 External data import
-
-################## EXTERNAL DATA IMPORT
+## 07 External data import ####
 library(terra)
 
 # 1 st Step: explain to R which folder we are gonna use (called WORKING DIRECTORY) with the function: setwd("pathway for the document")
@@ -631,7 +654,7 @@ ext<-c(22,26,55,57) #min&max longitude (x), min&max latitude (y)
 soilm2023crop<-crop(soilm2023,ext)
 # let's see it
 plot(soilm2023crop[[1]], col=cl)  
-  
+
 # another extent
 ext1<-c(10,24,60,75)
 soilm2023crop1<-crop(soilm2023,ext1)
@@ -866,40 +889,4 @@ plot(sdstack, col = viridisc)
 
 
 # ----------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
